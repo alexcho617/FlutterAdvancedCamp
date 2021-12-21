@@ -100,15 +100,7 @@ class _CartPageState extends State<CartPage> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
 
-                  GetBuilder<CartController>(builder: (_) {
-                    return Column(
-                      children: [
-                        Text('Name:${_.cartList[0].name}'),
-                        Text('Name:${_.cartList[1].name}')
-                      ],
-                    );
-                    // return ListView.builder(itemBuilder: itemBuilder)
-                  }),
+
 
                   Divider(
                     height: 50,
@@ -119,39 +111,52 @@ class _CartPageState extends State<CartPage> {
                   SizedBox(
                     height: 50,
                   ),
-                  Center(
-                    child: Column(
+                  GetBuilder<CartController>(builder: (_) {
+                    return _.cartList.isNotEmpty?
+                      Column(
                       children: [
-                        Icon(
-                          Icons.shopping_cart_outlined,
-                          size: 50,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            '장바구니에 상품을 담아보세요.',
-
+                        Text('Name:${_.cartList[0].name}'),
+                        Text('Name:${_.cartList[1].name}')
+                      ],
+                    )
+                    :
+                    Center(
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.shopping_cart_outlined,
+                            size: 50,
                           ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Get.to(HomePage());
-                          },
-                          child: Text(
-                            '쇼핑 계속하기',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '장바구니에 상품을 담아보세요.',
+
                             ),
                           ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            padding: EdgeInsets.all(20),
+                          ElevatedButton(
+                            onPressed: () {
+                              Get.to(HomePage());
+                            },
+                            child: Text(
+                              '쇼핑 계속하기',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white,
+                              padding: EdgeInsets.all(20),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        ],
+                      ),
+                    );
+
+                    // return ListView.builder(itemBuilder: itemBuilder)
+                  }),
+
                   SizedBox(
                     height: 50,
                   ),
