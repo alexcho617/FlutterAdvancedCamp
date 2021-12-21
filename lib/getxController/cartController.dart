@@ -1,13 +1,17 @@
+// ignore_for_file: file_names
+
 import 'package:get/get.dart';
 import 'package:hemweb/model/product.dart';
 
 //define the getx controllers here
 class CartController extends GetxController {
-  // List<Product> cartList = [Product(name: 'Jeans',price: '59000')];
-  List<Product> cartList = [];
 
+  var cartList = <Product>[].obs;
+
+  // Future<void> fetchFirestore()async {
+  //   await 
+  // }
   addCart(Product item) {
     cartList.add(item);
-    update();
   }
 }
