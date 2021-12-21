@@ -1,9 +1,12 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hemweb/screens/cart.dart';
+import 'package:hemweb/screens/home.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
+  void goToHome() {}
 
   @override
   Widget build(BuildContext context) {
@@ -12,12 +15,12 @@ class HomePage extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              Text('Home Page'),
+              Text('Login Page'),
               ElevatedButton(
                 onPressed: () {
-                  Get.to(CartPage());
+                  Get.to(HomePage());
                 },
-                child: Text('Go To Cart'),
+                child: Text('Go To Home'),
               ),
             ],
           ),
