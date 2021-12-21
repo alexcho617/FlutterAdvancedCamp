@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,68 +13,105 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 70.0,
-            ),
-            Text(
-              "안녕하세요 :)\n하이버입니다",
-              style: TextStyle(fontSize: 29.0),
-            ), //text-align: center; padding-top: 20px color:#000000; font-size: 14px; padding-left: 30px
-            Text("브랜디/하이버/마미의 통합회원으로 로그인 가능합니다."),
-            const SizedBox(
-              height: 50.0,
-            ),
-            SizedBox(
-              width: 566,
-              height: 50,
-              child: TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: '아이디 입력'),
+        child: SizedBox(
+          width: 566,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 70.0,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: SizedBox(
+              Text(
+                "안녕하세요 :)\n하이버입니다.",
+                style: Theme.of(context).textTheme.headline4,
+              ),
+              Text("브랜디/하이버/마미의 통합회원으로 로그인 가능합니다."),
+              const SizedBox(
+                height: 50.0,
+              ),
+              SizedBox(
                 width: 566,
                 height: 50,
                 child: TextField(
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(), labelText: '비밀번호 입력'),
+                      border: OutlineInputBorder(), labelText: '아이디 입력'),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Container(
-                  width: 556,
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: SizedBox(
+                  width: 566,
                   height: 50,
-                  color: Colors.black,
-                  child: TextButton(onPressed: () {}, child: Text("로그인",style: TextStyle(color: Colors.white),))),
-            ),
-          ],
+                  child: TextField(
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(), labelText: '비밀번호 입력'),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Container(
+                    width: 566,
+                    height: 50,
+                    color: Colors.black,
+                    child: TextButton(onPressed: () {}, child: Text("로그인",style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),))),
+              ),
+              Padding(padding: const EdgeInsets.only(top: 15.0),
+              child: SizedBox(
+                height: 40.0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: TextButton(onPressed: (){}, child: Text("아이디 찾기", style: Theme.of(context).textTheme.button,)),
+                    ),
+                    SizedBox(height: 14,child: const VerticalDivider()),
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: TextButton(onPressed: (){}, child: Text("비밀번호 찾기", style: Theme.of(context).textTheme.button,)),
+                    ),
+                    SizedBox(height: 14,child: const VerticalDivider()),
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: TextButton(onPressed: (){}, child: Text("회원가입", style: Theme.of(context).textTheme.button,)),
+                    ),
+                  ],
+                ),
+              ),),
+              SizedBox(
+                height: 100.0,
+              ),
+              Row(
+                children: const <Widget>[
+                  Expanded(child: Divider()),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(6,0,6,0),
+                    child: Text("SNS 로그인/가입"),
+                  ),
+                  Expanded(child: Divider()),
+                ],
+              ),
+              SizedBox(height: 20,),
+              Center(
+                child: Container(
+                  width: 70,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: Image.asset('assets/googleLoginIcon.png').image
+                    )
+                  ),
+                ),
+              ),
+              // Image.asset('assets/googleLoginIcon.jpg'),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
-// '''
-// TextTheme _textTheme(TextTheme base){
-//   return base
-//       .copyWith(
-//       bodyText2: base.headline1!.copyWith(
-//         fontSize: 29.0,
-//       )
-//   );
-// }
-//
-// ThemeData _themeData(){
-//   final ThemeData base = ThemeData.light();
-//   return ThemeData(
-//     textTheme: _textTheme(base.textTheme),
-//   );
-// }
-// '''
