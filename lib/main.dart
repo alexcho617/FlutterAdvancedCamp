@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Advacned Camp HEM',
       home: HomePage(),
+
     );
   }
 }

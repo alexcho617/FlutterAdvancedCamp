@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:hemweb/screens/home.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get.dart';
 import 'package:hemweb/getxController/cartController.dart';
 
@@ -107,9 +110,6 @@ class _CartPageState extends State<CartPage> {
                   ),
                   Divider(
                     height: 50,
-                    indent: 0,
-                    endIndent: 0,
-                    thickness: 2,
                   ),
                 ],
               ),
@@ -120,3 +120,4 @@ class _CartPageState extends State<CartPage> {
     );
   }
 }
+
