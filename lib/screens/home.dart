@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hemweb/getxController/controller.dart';
+import 'package:hemweb/model/product.dart';
 import 'package:hemweb/screens/cart.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -15,12 +17,17 @@ final List<String> imgList = [
   'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
   'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
 ];
+Product prod1 = Product(name: 'Jeans', price: '59,000');
+Product prod2 = Product(name: 'Shirt', price: '49,000');
+List<Product> productList = [prod1, prod2];
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final cartController = Get.put(CartController());
+
     return Scaffold(
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) =>
@@ -55,7 +62,12 @@ class HomePage extends StatelessWidget {
               child: Container(
                 height: 50,
                 color: Colors.white,
-                child: Text('Drop Down Menu'),
+                child: TextButton(
+                  onPressed: () {
+                    Get.to(CartPage());
+                  },
+                  child: Text('Go To Cart'),
+                ),
               ),
             ),
             //slider
@@ -78,19 +90,30 @@ class HomePage extends StatelessWidget {
                 maxCrossAxisExtent: 250.0,
                 mainAxisSpacing: 10.0,
                 crossAxisSpacing: 10.0,
-                childAspectRatio: 4.0,
+                childAspectRatio: 2.0,
               ),
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
                   return Container(
                     color: index.isOdd ? Colors.white : Colors.black12,
-                    height: 200.0,
+                    height: 300.0,
                     child: Center(
-                      child: Text('$index', textScaleFactor: 5),
+                      child: Column(
+                        children: [
+                          Text('${productList[index].name}'),
+                          Text('${productList[index].price}'),
+                          TextButton(
+                              onPressed: () {
+                                cartController.addCart(productList[index]);
+                                //add to firebase user/cart
+                              },
+                              child: Text('Add Cart')),
+                        ],
+                      ),
                     ),
                   );
                 },
-                childCount: 40,
+                childCount: productList.length,
               ),
             )
           ],
@@ -99,8 +122,6 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-
 
 // final List<Widget> imageSliders = imgList
 //     .map((item) => Container(

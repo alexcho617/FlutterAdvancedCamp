@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hemweb/screens/home.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
 import 'package:hemweb/getxController/controller.dart';
 
@@ -17,6 +20,7 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
+    // final cartController = Get.put(CartController());
     return Scaffold(
       body: SafeArea(
           child: Center(
@@ -95,6 +99,17 @@ class _CartPageState extends State<CartPage> {
                     '상품정보',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
+
+                  GetBuilder<CartController>(builder: (_) {
+                    return Column(
+                      children: [
+                        Text('Name:${_.cartList[0].name}'),
+                        Text('Name:${_.cartList[1].name}')
+                      ],
+                    );
+                    // return ListView.builder(itemBuilder: itemBuilder)
+                  }),
+
                   Divider(
                     height: 50,
                     indent: 0,
