@@ -1,4 +1,7 @@
 //freezed
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+
 class Product {
   var id;
   var price;
@@ -7,4 +10,14 @@ class Product {
   var company;
 
   Product({this.id, this.price, this.imageURL, this.name, this.company});
+
+  factory Product.fromSnapShot(DocumentSnapshot ds) {
+    return Product(
+      id: ds.id,
+      company: ds['brand'],
+      imageURL: ds['image'],
+      name: ds['name'],
+      price: ds['price'],
+    );
+  }
 }
