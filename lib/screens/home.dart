@@ -26,6 +26,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final cartController = Get.put(CartController());
     final productController = Get.put(ProductController());
+
+    // productController.fetchProducts();
+
     return Scaffold(
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) =>
@@ -46,10 +49,13 @@ class HomePage extends StatelessWidget {
                     IconButton(
                         onPressed: () {
                           Get.to(CartPage());
-                        }, icon: Icon(Icons.shopping_cart)),
-                    IconButton(onPressed: () {
-                      Get.to(LoginPage());
-                    }, icon: Icon(Icons.person)),
+                        },
+                        icon: Icon(Icons.shopping_cart)),
+                    IconButton(
+                        onPressed: () {
+                          Get.to(LoginPage());
+                        },
+                        icon: Icon(Icons.person)),
                   ],
                 ),
                 background: FlutterLogo(),
@@ -99,6 +105,7 @@ class HomePage extends StatelessWidget {
               )),
             ),
             //items
+
             SliverGrid(
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 250.0,
@@ -112,18 +119,20 @@ class HomePage extends StatelessWidget {
                   color: index.isOdd ? Colors.white : Colors.black12,
                   height: 300.0,
                   child: Center(
-                    child: Column(
-                      children: [
-                        Text('${productController.productList[index].name}'),
-                        // Text('${productList[index].price}'),
-                        TextButton(
-                            onPressed: () {
-                              cartController.addCart(
-                                  productController.productList[index]);
-                              //add to firebase user/cart
-                            },
-                            child: Text('Add Cart')),
-                      ],
+                    child: Obx(
+                      () => Column(
+                        children: [
+                          Text('${productController.productList[index].name}'),
+                          // Text('${productList[index].price}'),
+                          TextButton(
+                              onPressed: () {
+                                cartController.addCart(
+                                    productController.productList[index]);
+                                //add to firebase user/cart
+                              },
+                              child: Text('Add Cart')),
+                        ],
+                      ),
                     ),
                   ),
                 );
