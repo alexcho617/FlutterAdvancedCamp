@@ -170,3 +170,20 @@ class _CartPageState extends State<CartPage> {
   }
 }
 
+class ProductTile extends StatelessWidget {
+
+  ProductTile({required this.imageUrl, required this.name, required this.price, required this.brand});
+  String imageUrl;
+  String name;
+  String price;
+  String brand;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Image.network(imageUrl),
+      title: Text(brand),
+      subtitle: Text(name + "\n" + price),
+    );
+  }
+}
