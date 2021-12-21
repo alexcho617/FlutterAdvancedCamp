@@ -85,6 +85,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  firebase_core:
+    dependency: "direct main"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -286,6 +288,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
+
     version: "0.4.7"
   typed_data:
     dependency: transitive
