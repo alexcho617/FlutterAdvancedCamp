@@ -1,14 +1,15 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hemweb/getxController/authController.dart';
+import 'package:hemweb/getxController/cartController.dart';
+import 'package:hemweb/getxController/productController.dart';
 import 'package:hemweb/model/product.dart';
 import 'package:hemweb/screens/cart.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hemweb/screens/login.dart';
-
-import 'login.dart';
 
 final List<String> imgList = [
   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -18,9 +19,6 @@ final List<String> imgList = [
   'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
   'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
 ];
-Product prod1 = Product(name: 'Jeans', price: '59,000');
-Product prod2 = Product(name: 'Shirt', price: '49,000');
-List<Product> productList = [prod1, prod2];
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -28,7 +26,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartController = Get.put(CartController());
-
+    final productController = Get.put(ProductController());
     return Scaffold(
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) =>
@@ -41,21 +39,35 @@ class HomePage extends StatelessWidget {
               expandedHeight: 160.0,
               flexibleSpace: FlexibleSpaceBar(
                 //header
-                title: Row(
-                  children: [
-                    Text('Hiver'),
-                    // TextField(),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-                    IconButton(
-                        onPressed: () {
-                          Get.to(CartPage());
-                        }, icon: Icon(Icons.shopping_cart)),
-                    IconButton(onPressed: () {
-                      Get.to(LoginPage());
-                    }, icon: Icon(Icons.person)),
-                  ],
+                title: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.asset(
+                        'assets/logoImage.png',
+                        height: 30,
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: () {}, icon: Icon(Icons.search)),
+                          IconButton(
+                              onPressed: () {
+                                Get.to(CartPage());
+                              },
+                              icon: Icon(Icons.shopping_cart_outlined)),
+                          IconButton(
+                              onPressed: () {
+                                Get.to(LoginPage());
+                              },
+                              icon: Icon(Icons.person_outlined)),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                background: FlutterLogo(),
+                // background: FlutterLogo(),
               ),
             ),
             //dropdown menu
@@ -63,11 +75,27 @@ class HomePage extends StatelessWidget {
               child: Container(
                 height: 50,
                 color: Colors.white,
-                child: TextButton(
-                  onPressed: () {
-                    Get.to(CartPage());
-                  },
-                  child: Text('Go To Cart'),
+                child: Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Get.to(CartPage());
+                      },
+                      child: Text('Go To Cart'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        productController.printProduct();
+                      },
+                      child: Text('Print Product'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        productController.fetchProducts();
+                      },
+                      child: Text('Fetch Product'),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -75,7 +103,10 @@ class HomePage extends StatelessWidget {
             SliverToBoxAdapter(
               child: Container(
                   child: CarouselSlider(
-                options: CarouselOptions(),
+                options: CarouselOptions(
+                  height: 400,
+                  autoPlay: true,
+                ),
                 items: imgList
                     .map((item) => Container(
                           child: Center(
@@ -91,31 +122,30 @@ class HomePage extends StatelessWidget {
                 maxCrossAxisExtent: 250.0,
                 mainAxisSpacing: 10.0,
                 crossAxisSpacing: 10.0,
-                childAspectRatio: 2.0,
+                childAspectRatio: 1.5,
               ),
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return Container(
-                    color: index.isOdd ? Colors.white : Colors.black12,
-                    height: 300.0,
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Text('${productList[index].name}'),
-                          Text('${productList[index].price}'),
-                          TextButton(
-                              onPressed: () {
-                                cartController.addCart(productList[index]);
-                                //add to firebase user/cart
-                              },
-                              child: Text('Add Cart')),
-                        ],
-                      ),
+              delegate:
+                  SliverChildBuilderDelegate((BuildContext context, int index) {
+                return Container(
+                  color: index.isOdd ? Colors.white : Colors.black12,
+                  height: 300.0,
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Text('${productController.productList[index].name}'),
+                        // Text('${productList[index].price}'),
+                        TextButton(
+                            onPressed: () {
+                              cartController.addCart(
+                                  productController.productList[index]);
+                              //add to firebase user/cart
+                            },
+                            child: Text('Add Cart')),
+                      ],
                     ),
-                  );
-                },
-                childCount: productList.length,
-              ),
+                  ),
+                );
+              }, childCount: productController.productList.length),
             )
           ],
         ),
@@ -123,45 +153,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-// final List<Widget> imageSliders = imgList
-//     .map((item) => Container(
-//           child: Container(
-//             margin: EdgeInsets.all(5.0),
-//             child: ClipRRect(
-//                 borderRadius: BorderRadius.all(Radius.circular(5.0)),
-//                 child: Stack(
-//                   children: <Widget>[
-//                     Image.network(item, fit: BoxFit.cover, width: 1000.0),
-//                     Positioned(
-//                       bottom: 0.0,
-//                       left: 0.0,
-//                       right: 0.0,
-//                       child: Container(
-//                         decoration: BoxDecoration(
-//                           gradient: LinearGradient(
-//                             colors: [
-//                               Color.fromARGB(200, 0, 0, 0),
-//                               Color.fromARGB(0, 0, 0, 0)
-//                             ],
-//                             begin: Alignment.bottomCenter,
-//                             end: Alignment.topCenter,
-//                           ),
-//                         ),
-//                         padding: EdgeInsets.symmetric(
-//                             vertical: 10.0, horizontal: 20.0),
-//                         child: Text(
-//                           'No. ${imgList.indexOf(item)} image',
-//                           style: TextStyle(
-//                             color: Colors.white,
-//                             fontSize: 20.0,
-//                             fontWeight: FontWeight.bold,
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 )),
-//           ),
-//         ))
-//     .toList();
