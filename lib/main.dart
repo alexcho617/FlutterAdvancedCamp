@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hemweb/getxController/productController.dart';
 import 'package:hemweb/screens/home.dart';
 import 'package:hemweb/screens/login.dart';
 
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Advacned Camp HEM',
+      initialBinding: BindingsBuilder((){
+        Get.put(ProductController());
+      }),
       home: HomePage(),
     );
   }

@@ -19,13 +19,13 @@ final List<String> imgList = [
   'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
 ];
 
-class HomePage extends StatelessWidget {
+class HomePage extends GetView<ProductController> {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final cartController = Get.put(CartController());
-    final productController = Get.put(ProductController());
+    // final productController = Get.put(ProductController());
 
     // productController.fetchProducts();
 
@@ -76,13 +76,13 @@ class HomePage extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        productController.printProduct();
+                        controller.printProduct();
                       },
                       child: Text('Print Product'),
                     ),
                     TextButton(
                       onPressed: () {
-                        productController.fetchProducts();
+                        controller.fetchProducts();
                       },
                       child: Text('Fetch Product'),
                     ),
@@ -106,41 +106,45 @@ class HomePage extends StatelessWidget {
             ),
             //items
 
-            SliverGrid(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 250.0,
-                mainAxisSpacing: 10.0,
-                crossAxisSpacing: 10.0,
-                childAspectRatio: 1.5,
-              ),
-              delegate:
-                  SliverChildBuilderDelegate((BuildContext context, int index) {
-                return Container(
-                  color: index.isOdd ? Colors.white : Colors.black12,
-                  height: 300.0,
-                  child: Center(
-                    child: Obx(
-                      () => Column(
-                        children: [
-                          Text('${productController.productList[index].name}'),
-                          // Text('${productList[index].price}'),
-                          TextButton(
-                              onPressed: () {
-                                cartController.addCart(
-                                    productController.productList[index]);
-                                //add to firebase user/cart
-                              },
-                              child: Text('Add Cart')),
-                        ],
-                      ),
-                    ),
+            Obx(() => SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 250.0,
+                    mainAxisSpacing: 10.0,
+                    crossAxisSpacing: 10.0,
+                    childAspectRatio: 1.5,
                   ),
-                );
-              }, childCount: productController.productList.length),
-            )
+                  delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                    return Container(
+                      color: index.isOdd ? Colors.white : Colors.black12,
+                      height: 300.0,
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Text('${controller.productList[index].name}'),
+                            // Text('${productList[index].price}'),
+                            TextButton(
+                                onPressed: () {
+                                  cartController
+                                      .addCart(controller.productList[index]);
+                                  //add to firebase user/cart
+                                },
+                                child: Text('Add Cart')),
+                          ],
+                        ),
+                      ),
+                    );
+                  }, childCount: controller.productList.length),
+                ))
           ],
         ),
       ),
     );
   }
 }
+
+
+
+// productController.productList.length == 0
+//                   ? CircularProgressIndicator()
+//                   : 
