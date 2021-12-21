@@ -33,6 +33,7 @@ class HomePage extends StatelessWidget {
             CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
+              backgroundColor: Colors.white,
               pinned: true,
               snap: false,
               floating: true,
