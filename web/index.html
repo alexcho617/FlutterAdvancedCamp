@@ -33,6 +33,25 @@
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAWXKccNzcX1tSPcXYkKRXeonD2JsG1AFE",
+    authDomain: "hemweb.firebaseapp.com",
+    projectId: "hemweb",
+    storageBucket: "hemweb.appspot.com",
+    messagingSenderId: "114809887796",
+    appId: "1:114809887796:web:bf7b5f140ffe5e7e717e61"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  </script>
   <script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
