@@ -1,12 +1,22 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hemweb/screens/home.dart';
 import 'package:hemweb/screens/login.dart';
-import 'package:firebase_core/firebase_core.dart' as firebase_core;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await firebase_core.Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey: "AIzaSyAWXKccNzcX1tSPcXYkKRXeonD2JsG1AFE", // Your apiKey
+      appId: "1:114809887796:web:bf7b5f140ffe5e7e717e61", // Your appId
+      messagingSenderId: "114809887796", // Your messagingSenderId
+      projectId: "hemweb", // Your projectId
+    ),
+  );
+
   runApp(const MyApp());
 }
 
@@ -18,7 +28,6 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Advacned Camp HEM',
       home: HomePage(),
-
     );
   }
 }

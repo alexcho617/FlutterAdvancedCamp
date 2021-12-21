@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ProductController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   var productList = <Product>[].obs;
-
+  //factory
   Future<void> fetchProducts() async {
     await firestore
         .collection('product')
