@@ -5,6 +5,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:hemweb/screens/home.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
+import 'package:hemweb/getxController/authController.dart';
 import 'package:hemweb/getxController/cartController.dart';
 
 class CartPage extends StatefulWidget {
@@ -121,3 +123,20 @@ class _CartPageState extends State<CartPage> {
   }
 }
 
+class ProductTile extends StatelessWidget {
+
+  ProductTile({required this.imageUrl, required this.name, required this.price, required this.brand});
+  String imageUrl;
+  String name;
+  String price;
+  String brand;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Image.network(imageUrl),
+      title: Text(brand),
+      subtitle: Text(name + "\n" + price),
+    );
+  }
+}

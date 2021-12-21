@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -9,14 +8,16 @@ import 'package:hemweb/screens/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    //webonly
-    // options: FirebaseOptions(
-    //   apiKey: "AIzaSyAWXKccNzcX1tSPcXYkKRXeonD2JsG1AFE", // Your apiKey
-    //   appId: "1:114809887796:web:bf7b5f140ffe5e7e717e61", // Your appId
-    //   messagingSenderId: "114809887796", // Your messagingSenderId
-    //   projectId: "hemweb", // Your projectId
-    // ),
+
+  await firebase_core.Firebase.initializeApp(
+    // webonly
+    options: FirebaseOptions(
+      apiKey: "AIzaSyAWXKccNzcX1tSPcXYkKRXeonD2JsG1AFE", // Your apiKey
+      appId: "1:114809887796:web:bf7b5f140ffe5e7e717e61", // Your appId
+      messagingSenderId: "114809887796", // Your messagingSenderId
+      projectId: "hemweb", // Your projectId
+    ),
+
   );
 
   runApp(const MyApp());

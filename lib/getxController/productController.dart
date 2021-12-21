@@ -5,6 +5,16 @@ import 'package:hemweb/model/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductController extends GetxController {
+  @override
+  void onInit() {
+    super.onInit();
+    fetchProducts();
+  }
+  // @override
+  // void onClose() {
+
+  //   super.onClose();
+  // }
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   var productList = <Product>[].obs;
   //factory
@@ -16,19 +26,24 @@ class ProductController extends GetxController {
   }
 
   Future<void> fetchProducts() async {
-    await firestore
-        .collection('product')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        Product prodObject = Product();
-        prodObject.name = doc.get("name").toString();
-        prodObject.price = doc.get("price").toString();
-        prodObject.company = doc.get("brand").toString();
-        prodObject.imageURL = doc.get("image").toString();
-        productList.add(prodObject);
-      }
+    QuerySnapshot x = await firestore.collection('product').get();
+    x.docs.forEach((element) {
+      productList.add(Product.fromSnapShot(element));
     });
+
+    // await firestore
+    //     .collection('product')
+    //     .get()
+    //     .then((QuerySnapshot querySnapshot) {
+    //   for (var doc in querySnapshot.docs) {
+    //     Product prodObject = Product();
+    //     prodObject.name = doc.get("name").toString();
+    //     prodObject.price = doc.get("price").toString();
+    //     prodObject.company = doc.get("brand").toString();
+    //     prodObject.imageURL = doc.get("image").toString();
+    //     productList.add(prodObject);
+    //   }
+    // });
   }
 
   void printProduct() {

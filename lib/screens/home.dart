@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hemweb/getxController/authController.dart';
 import 'package:hemweb/getxController/cartController.dart';
 import 'package:hemweb/getxController/productController.dart';
 import 'package:hemweb/model/product.dart';
@@ -35,30 +36,43 @@ class HomePage extends GetView<ProductController> {
             CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
+              backgroundColor: Colors.white,
               pinned: true,
               snap: false,
               floating: true,
               expandedHeight: 160.0,
               flexibleSpace: FlexibleSpaceBar(
                 //header
-                title: Row(
-                  children: [
-                    Text('Hiver'),
-                    // TextField(),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-                    IconButton(
-                        onPressed: () {
-                          Get.to(CartPage());
-                        },
-                        icon: Icon(Icons.shopping_cart)),
-                    IconButton(
-                        onPressed: () {
-                          Get.to(LoginPage());
-                        },
-                        icon: Icon(Icons.person)),
-                  ],
+
+                title: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.asset(
+                        'assets/logoImage.png',
+                        height: 30,
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: () {}, icon: Icon(Icons.search)),
+                          IconButton(
+                              onPressed: () {
+                                Get.to(CartPage());
+                              },
+                              icon: Icon(Icons.shopping_cart_outlined)),
+                          IconButton(
+                              onPressed: () {
+                                Get.to(LoginPage());
+                              },
+                              icon: Icon(Icons.person_outlined)),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                background: FlutterLogo(),
+                // background: FlutterLogo(),
               ),
             ),
             //dropdown menu
@@ -94,7 +108,10 @@ class HomePage extends GetView<ProductController> {
             SliverToBoxAdapter(
               child: Container(
                   child: CarouselSlider(
-                options: CarouselOptions(),
+                options: CarouselOptions(
+                  height: 400,
+                  autoPlay: true,
+                ),
                 items: imgList
                     .map((item) => Container(
                           child: Center(
