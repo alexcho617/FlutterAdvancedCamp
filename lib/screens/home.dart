@@ -13,6 +13,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: [
               Text('Home Page'),
+              Text('I made new branch'),
               ElevatedButton(
                 onPressed: () {
                   Get.to(CartPage());
