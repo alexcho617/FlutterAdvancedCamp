@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "114809887796",
+    "project_id": "hemweb",
+    "storage_bucket": "hemweb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114809887796:android:c24351512f20d05c717e61",
+        "android_client_info": {
+          "package_name": "com.example.hemweb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114809887796-pqo80bg5j734tg5o74mmiv9579vgciba.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hemweb",
+            "certificate_hash": "ba0c5515c8ea68e0f9fe0e8e6c241b67ca57018a"
+          }
+        },
+        {
+          "client_id": "114809887796-58vhm3md7ab4lgpae8tt4t99fc4c15f2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqZCbrn_aiN-u5DyfsY25QVFi4UcUld48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114809887796-58vhm3md7ab4lgpae8tt4t99fc4c15f2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "114809887796-akt8t2ima0bvjqvjjepdrocoe84l27ms.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.alexcho617.hemweb"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
