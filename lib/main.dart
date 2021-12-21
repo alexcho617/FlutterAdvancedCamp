@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hemweb/screens/home.dart';
-import 'package:hemweb/screens/login.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Advacned Camp HEM',
       home: HomePage(),
+
     );
   }
 }
