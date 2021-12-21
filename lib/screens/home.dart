@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hemweb/getxController/authController.dart';
 import 'package:hemweb/getxController/cartController.dart';
 import 'package:hemweb/getxController/productController.dart';
 import 'package:hemweb/model/product.dart';

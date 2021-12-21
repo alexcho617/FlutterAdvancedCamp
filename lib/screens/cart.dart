@@ -5,6 +5,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:hemweb/screens/home.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
+import 'package:hemweb/getxController/authController.dart';
 import 'package:hemweb/getxController/cartController.dart';
 
 class CartPage extends StatefulWidget {
