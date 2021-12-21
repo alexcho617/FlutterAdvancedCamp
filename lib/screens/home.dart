@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hemweb/getxController/controller.dart';
 import 'package:hemweb/model/product.dart';
 import 'package:hemweb/screens/cart.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -23,6 +24,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cartController = Get.put(CartController());
+
     return Scaffold(
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) =>
@@ -41,7 +44,10 @@ class HomePage extends StatelessWidget {
                     // TextField(),
                     IconButton(onPressed: () {}, icon: Icon(Icons.search)),
                     IconButton(
-                        onPressed: () {}, icon: Icon(Icons.shopping_cart)),
+                        onPressed: () {
+                          Get.to(CartPage());
+                        },
+                        icon: Icon(Icons.shopping_cart)),
                     IconButton(onPressed: () {}, icon: Icon(Icons.person)),
                   ],
                 ),
@@ -53,7 +59,12 @@ class HomePage extends StatelessWidget {
               child: Container(
                 height: 50,
                 color: Colors.white,
-                child: Text('Drop Down Menu'),
+                child: TextButton(
+                  onPressed: () {
+                    Get.to(CartPage());
+                  },
+                  child: Text('Go To Cart'),
+                ),
               ),
             ),
             //slider
@@ -76,18 +87,24 @@ class HomePage extends StatelessWidget {
                 maxCrossAxisExtent: 250.0,
                 mainAxisSpacing: 10.0,
                 crossAxisSpacing: 10.0,
-                childAspectRatio: 4.0,
+                childAspectRatio: 2.0,
               ),
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
                   return Container(
                     color: index.isOdd ? Colors.white : Colors.black12,
-                    height: 200.0,
+                    height: 300.0,
                     child: Center(
                       child: Column(
                         children: [
                           Text('${productList[index].name}'),
-                          Text('${productList[index].price}')
+                          Text('${productList[index].price}'),
+                          TextButton(
+                              onPressed: () {
+                                cartController.addCart(productList[index]);
+                                //add to firebase user/cart
+                              },
+                              child: Text('Add Cart')),
                         ],
                       ),
                     ),
