@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hemweb/screens/home.dart';
+import 'package:get/get.dart';
+import 'package:hemweb/screens/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,9 +11,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Advacned Camp HEM',
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }
