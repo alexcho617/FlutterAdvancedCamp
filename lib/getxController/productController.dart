@@ -20,7 +20,7 @@ class ProductController extends GetxController {
   //factory
 
   @override
-  void onInit() {
+  void getOnInit() {
     fetchProducts();
     super.onInit();
   }
