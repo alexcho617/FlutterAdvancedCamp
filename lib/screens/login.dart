@@ -10,6 +10,9 @@ import '/screens/home.dart';
 class LoginPage extends StatelessWidget {
   final authController = Get.put(AuthController());
 
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +38,9 @@ class LoginPage extends StatelessWidget {
                 width: 566,
                 height: 50,
                 child: TextField(
+                  controller: _emailController,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(), labelText: '아이디 입력'),
+                      border: OutlineInputBorder(), labelText: '이메일 입력'),
                 ),
               ),
               Padding(
@@ -45,6 +49,8 @@ class LoginPage extends StatelessWidget {
                   width: 566,
                   height: 50,
                   child: TextField(
+                    controller: _passwordController,
+                    obscureText: true,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(), labelText: '비밀번호 입력'),
                   ),
@@ -56,7 +62,9 @@ class LoginPage extends StatelessWidget {
                     width: 566,
                     height: 50,
                     color: Colors.black,
-                    child: TextButton(onPressed: () {}, child: Text("로그인",style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),))),
+                    child: TextButton(onPressed: () {
+                      authController.login(_emailController.text, _passwordController.text);
+                    }, child: Text("로그인",style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),))),
               ),
               Padding(padding: const EdgeInsets.only(top: 15.0),
               child: SizedBox(
@@ -76,7 +84,9 @@ class LoginPage extends StatelessWidget {
                     SizedBox(height: 14,child: const VerticalDivider()),
                     Padding(
                       padding: const EdgeInsets.all(2.0),
-                      child: TextButton(onPressed: (){}, child: Text("회원가입", style: Theme.of(context).textTheme.button,)),
+                      child: TextButton(onPressed: (){
+                        authController.register(_emailController.text, _passwordController.text);
+                      }, child: Text("회원가입", style: Theme.of(context).textTheme.button,)),
                     ),
                   ],
                 ),
