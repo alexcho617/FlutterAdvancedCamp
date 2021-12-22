@@ -17,9 +17,11 @@ void main() async {
       appId: "1:114809887796:web:bf7b5f140ffe5e7e717e61", // Your appId
       messagingSenderId: "114809887796", // Your messagingSenderId
       projectId: "hemweb", // Your projectId
+      storageBucket: 'gs://hemweb.appspot.com/',
     ),
 
   );
+
 
   runApp(const MyApp());
 }

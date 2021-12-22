@@ -1,5 +1,5 @@
 // ignore_for_file: file_names
-
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:get/get.dart';
 import 'package:hemweb/model/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,6 +16,7 @@ class ProductController extends GetxController {
   //   super.onClose();
   // }
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   var productList = <Product>[].obs;
   //factory
 
@@ -27,7 +28,8 @@ class ProductController extends GetxController {
 
   Future<void> fetchProducts() async {
     QuerySnapshot x = await firestore.collection('product').get();
-    x.docs.forEach((element) {
+
+    x.docs.forEach((element) async {
       productList.add(Product.fromSnapShot(element));
     });
 
@@ -46,7 +48,7 @@ class ProductController extends GetxController {
     // });
   }
 
-  void printProduct() {
+  void printProduct() async{
     print('printProd called');
     print('prodList length: ${productList.length}');
     for (var prod in productList) {
