@@ -11,10 +11,11 @@ class AuthController extends GetxController {
   static AuthController instance = Get.find();
   late Rx<GoogleSignInAccount?> googleSignInAccount;
 
+  late Rx<User?> firebaseUser;
+
   @override
   void onInit(){
     super.onInit();
-
 
   }
 
@@ -28,13 +29,36 @@ class AuthController extends GetxController {
     googleSignInAccount = Rx<GoogleSignInAccount?>(googleSignIn.currentUser);
     googleSignInAccount.bindStream(googleSignIn.onCurrentUserChanged);
 
-    ever(googleSignInAccount, (_) {
-      print("Google Sign In Changed!:\n");
-      print(googleSignInAccount);
-      print("\n\n");
-      print("This is the value: \n");
-      print(googleSignInAccount.value);
-    });
+    firebaseUser = Rx<User?>(auth.value.currentUser);
+    firebaseUser.bindStream(auth.value.userChanges());
+
+    // ever(googleSignInAccount, (_) {
+    //   print("Google Sign In Changed!:\n");
+    //   print(googleSignInAccount);
+    //   print("\n\n");
+    //   print("This is the value: \n");
+    //   print(googleSignInAccount.value);
+    // });
+  }
+
+  void register(String email, password) async {
+    try{
+      await auth.value.createUserWithEmailAndPassword(email: email, password: password);
+    }catch(e){
+      print("Error" + e.toString());
+    }
+  }
+
+  void login(String email, password) async{
+    try{
+      await auth.value.signInWithEmailAndPassword(email: email, password: password);
+    }catch(e){
+      print("Error" + e.toString());
+    }
+  }
+
+  void signOut() async {
+    await auth.value.signOut();
   }
 
   void signInWithGoogle() async {
@@ -54,7 +78,14 @@ class AuthController extends GetxController {
         await auth.value.signInWithCredential(authCredential);
         //Get.snackbar("Two", "signInCredentialDone", snackPosition: SnackPosition.BOTTOM);
 
-        await setUser();
+        QuerySnapshot userQuerySnapshot = await firestore.collection('user').get();
+        for (var element in userQuerySnapshot.docs) {
+          if(element.id == auth.value.currentUser!.uid){
+            return;
+          }
+        }
+        setUser();
+
       }
     } catch (e) {
       Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
