@@ -19,12 +19,6 @@ class ProductController extends GetxController {
   var productList = <Product>[].obs;
   //factory
 
-  @override
-  void getOnInit() {
-    fetchProducts();
-    super.onInit();
-  }
-
   Future<void> fetchProducts() async {
     QuerySnapshot x = await firestore.collection('product').get();
     x.docs.forEach((element) {

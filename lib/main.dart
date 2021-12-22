@@ -12,12 +12,12 @@ void main() async {
   
   await Firebase.initializeApp(
     // webonly
-    options: FirebaseOptions(
-      apiKey: "AIzaSyAWXKccNzcX1tSPcXYkKRXeonD2JsG1AFE", // Your apiKey
-      appId: "1:114809887796:web:bf7b5f140ffe5e7e717e61", // Your appId
-      messagingSenderId: "114809887796", // Your messagingSenderId
-      projectId: "hemweb", // Your projectId
-    ),
+    // options: FirebaseOptions(
+    //   apiKey: "AIzaSyAWXKccNzcX1tSPcXYkKRXeonD2JsG1AFE", // Your apiKey
+    //   appId: "1:114809887796:web:bf7b5f140ffe5e7e717e61", // Your appId
+    //   messagingSenderId: "114809887796", // Your messagingSenderId
+    //   projectId: "hemweb", // Your projectId
+    // ),
 
   );
 

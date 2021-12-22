@@ -56,8 +56,6 @@ class HomePage extends GetView<ProductController> {
                       Row(
                         children: [
                           IconButton(
-                              onPressed: () {}, icon: Icon(Icons.search)),
-                          IconButton(
                               onPressed: () {
                                 Get.to(CartPage());
                               },

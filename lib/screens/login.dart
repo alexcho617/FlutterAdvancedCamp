@@ -8,7 +8,7 @@ import 'package:hemweb/getxController/authController.dart';
 import '/screens/home.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  final authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +98,7 @@ class LoginPage extends StatelessWidget {
               Center(
                 child: InkWell(
                   onTap: (){
-                    AuthController().signInWithGoogle();
+                    authController.signInWithGoogle();
                   },
                   child: Container(
                     width: 70,
