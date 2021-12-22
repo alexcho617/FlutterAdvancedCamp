@@ -1,13 +1,25 @@
 // ignore_for_file: file_names
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hemweb/constants/firebase.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
   late Rx<GoogleSignInAccount?> googleSignInAccount;
+
+  @override
+  void onInit(){
+    super.onInit();
+
+  }
+
+  final Future<FirebaseApp> firebaseInitialization = Firebase.initializeApp();
+  Rx<FirebaseAuth> auth = FirebaseAuth.instance.obs;
+  GoogleSignIn googleSignIn = GoogleSignIn();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   void onReady() {
@@ -33,11 +45,14 @@ class AuthController extends GetxController {
             accessToken: googleSignInAuthentication.accessToken,
             idToken: googleSignInAuthentication.idToken);
 
-        await auth.signInWithCredential(authCredential);
+        await auth.value.signInWithCredential(authCredential);
       }
     } catch (e) {
       Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
     }
   }
-  
+
+  void authTestPrint() {
+    print(auth);
+  }
 }
