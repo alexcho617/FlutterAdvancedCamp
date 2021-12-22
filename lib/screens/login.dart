@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hemweb/getxController/authController.dart';
 
 import '/screens/home.dart';
 
@@ -95,15 +96,20 @@ class LoginPage extends StatelessWidget {
               ),
               SizedBox(height: 20,),
               Center(
-                child: Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: Image.asset('assets/googleLoginIcon.png').image
-                    )
+                child: InkWell(
+                  onTap: (){
+                    AuthController().signInWithGoogle();
+                  },
+                  child: Container(
+                    width: 70,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: Image.asset('assets/googleLoginIcon.png').image
+                      )
+                    ),
                   ),
                 ),
               ),
