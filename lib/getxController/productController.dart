@@ -5,31 +5,22 @@ import 'package:hemweb/model/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductController extends GetxController {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  var productList = <Product>[].obs;
+
   @override
   void onInit() {
     super.onInit();
     fetchProducts();
   }
-  // @override
-  // void onClose() {
-
-  //   super.onClose();
-  // }
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  var productList = <Product>[].obs;
-  //factory
-
-  @override
-  void getOnInit() {
-    fetchProducts();
-    super.onInit();
-  }
 
   Future<void> fetchProducts() async {
     QuerySnapshot x = await firestore.collection('product').get();
-    x.docs.forEach((element) {
+    for (var element in x.docs) {
       productList.add(Product.fromSnapShot(element));
-    });
+    }
+  }
+}
 
     // await firestore
     //     .collection('product')
@@ -44,14 +35,22 @@ class ProductController extends GetxController {
     //     productList.add(prodObject);
     //   }
     // });
-  }
 
-  void printProduct() {
-    print('printProd called');
-    print('prodList length: ${productList.length}');
-    for (var prod in productList) {
-      print(prod.name);
-      print(prod.price);
-    }
-  }
-}
+
+  // void printProduct() {
+  //   print('printProd called');
+  //   print('prodList length: ${productList.length}');
+  //   for (var prod in productList) {
+  //     print(prod.name);
+  //     print(prod.price);
+  //   }
+  // }
+
+
+
+
+  // @override
+  // void onClose() {
+
+  //   super.onClose();
+  // }

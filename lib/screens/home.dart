@@ -11,6 +11,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hemweb/screens/login.dart';
 
+const String testImageURL =
+    'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80';
 final List<String> imgList = [
   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
   'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
@@ -21,24 +23,20 @@ final List<String> imgList = [
 ];
 
 class HomePage extends GetView<ProductController> {
-  const HomePage({Key? key}) : super(key: key);
+  final cartController = Get.put(CartController());
+  bool? isNarrow;
 
   @override
   Widget build(BuildContext context) {
-    final cartController = Get.put(CartController());
-    // final productController = Get.put(ProductController());
-
-    // productController.fetchProducts();
-
     return Scaffold(
       body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) =>
-            CustomScrollView(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        return CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
               backgroundColor: Colors.white,
               pinned: true,
-              snap: false,
+              snap: true,
               floating: true,
               expandedHeight: 160.0,
               flexibleSpace: FlexibleSpaceBar(
@@ -72,27 +70,22 @@ class HomePage extends GetView<ProductController> {
                     ],
                   ),
                 ),
-                // background: FlutterLogo(),
               ),
             ),
             //dropdown menu
+
             SliverToBoxAdapter(
               child: Container(
                 height: 50,
                 color: Colors.white,
                 child: Row(
                   children: [
+                    Text('ADD DROP DOWN MENU HERE'),
                     TextButton(
                       onPressed: () {
                         Get.to(CartPage());
                       },
                       child: Text('Go To Cart'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        controller.printProduct();
-                      },
-                      child: Text('Print Product'),
                     ),
                     TextButton(
                       onPressed: () {
@@ -121,47 +114,47 @@ class HomePage extends GetView<ProductController> {
                     .toList(),
               )),
             ),
-            //items
 
-            Obx(() => SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 250.0,
-                    mainAxisSpacing: 10.0,
-                    crossAxisSpacing: 10.0,
-                    childAspectRatio: 1.5,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                    return Container(
-                      color: index.isOdd ? Colors.white : Colors.black12,
-                      height: 300.0,
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Text('${controller.productList[index].name}'),
-                            // Text('${productList[index].price}'),
-                            TextButton(
-                                onPressed: () {
-                                  cartController
-                                      .addCart(controller.productList[index]);
-                                  //add to firebase user/cart
-                                },
-                                child: Text('Add Cart')),
-                          ],
-                        ),
-                      ),
-                    );
-                  }, childCount: controller.productList.length),
-                ))
+            //items
+            constraints.maxWidth > 1000 ? returnGrid(4) : returnGrid(2),
           ],
-        ),
+        );
+      }),
+    );
+  }
+
+  Obx returnGrid(int gridCount) {
+    return Obx(
+      () => SliverGrid(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: gridCount,
+            mainAxisSpacing: 10.0,
+            crossAxisSpacing: 10.0,
+            childAspectRatio: 1.5),
+        delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+          return Container(
+            color: index.isOdd ? Colors.white : Colors.black12,
+            height: 50.0,
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.network(controller.productList[index].imageURL),
+                  Text('${controller.productList[index].company}'),
+                  Text('${controller.productList[index].name}'),
+                  Text('${controller.productList[index].price}'),
+                  TextButton(
+                      onPressed: () {
+                        cartController.addCart(controller.productList[index]);
+                        //add to firebase user/cart
+                      },
+                      child: Text('Add Cart')),
+                ],
+              ),
+            ),
+          );
+        }, childCount: controller.productList.length),
       ),
     );
   }
 }
-
-
-
-// productController.productList.length == 0
-//                   ? CircularProgressIndicator()
-//                   : 
