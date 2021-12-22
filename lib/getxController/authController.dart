@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,9 +15,9 @@ class AuthController extends GetxController {
   void onInit(){
     super.onInit();
 
+
   }
 
-  final Future<FirebaseApp> firebaseInitialization = Firebase.initializeApp();
   Rx<FirebaseAuth> auth = FirebaseAuth.instance.obs;
   GoogleSignIn googleSignIn = GoogleSignIn();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -28,13 +29,18 @@ class AuthController extends GetxController {
     googleSignInAccount.bindStream(googleSignIn.onCurrentUserChanged);
 
     ever(googleSignInAccount, (_) {
+      print("Google Sign In Changed!:\n");
       print(googleSignInAccount);
+      print("\n\n");
+      print("This is the value: \n");
+      print(googleSignInAccount.value);
     });
   }
 
   void signInWithGoogle() async {
     try {
       GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+      //Get.snackbar("One", "signInDone", snackPosition: SnackPosition.TOP);
 
       //When google login success
       if (googleSignInAccount != null) {
@@ -46,13 +52,23 @@ class AuthController extends GetxController {
             idToken: googleSignInAuthentication.idToken);
 
         await auth.value.signInWithCredential(authCredential);
+        //Get.snackbar("Two", "signInCredentialDone", snackPosition: SnackPosition.BOTTOM);
+
+        await setUser();
       }
     } catch (e) {
       Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
     }
   }
 
-  void authTestPrint() {
-    print(auth);
+
+  CollectionReference user = FirebaseFirestore.instance.collection('user');
+  Future<void> setUser(){
+
+    return user.doc(auth.value.currentUser!.uid).set({
+      'name' : auth.value.currentUser!.displayName,
+      'email' : auth.value.currentUser!.email
+    }).then((value) => print("User Logined\n")).catchError((e) =>print("Set Failed\n"));
   }
+
 }
