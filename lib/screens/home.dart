@@ -139,7 +139,7 @@ class HomePage extends GetView<ProductController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.network(controller.productList[index].imageURL),
+                  // Image.network(controller.productList[index].imageURL),
                   Text('${controller.productList[index].company}'),
                   Text('${controller.productList[index].name}'),
                   Text('${controller.productList[index].price}'),

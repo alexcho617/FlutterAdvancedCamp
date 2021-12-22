@@ -7,6 +7,7 @@ import 'package:hemweb/model/product.dart';
 class CartController extends GetxController {
 
   var cartList = <Product>[].obs;
+  var checkList = <String>[].obs;
 
   // Future<void> fetchFirestore()async {
   //   await 
@@ -14,4 +15,5 @@ class CartController extends GetxController {
   addCart(Product item) {
     cartList.add(item);
   }
+
 }
