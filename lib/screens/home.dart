@@ -23,7 +23,6 @@ final List<String> imgList = [
   'https://firebasestorage.googleapis.com/v0/b/hemweb.appspot.com/o/bannerImage_6.jpeg?alt=media&token=b7ea05bb-1b46-4a6b-aac1-a59864dd4c56'
 ];
 
-
 class HomePage extends GetView<ProductController> {
   final cartController = Get.put(CartController());
   bool? isNarrow;
@@ -40,18 +39,19 @@ class HomePage extends GetView<ProductController> {
               pinned: true,
               snap: true,
               floating: true,
-              expandedHeight: 160.0,
+              expandedHeight: constraints.maxHeight * 0.05,
               flexibleSpace: FlexibleSpaceBar(
                 //header
 
                 title: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: constraints.maxWidth * 0.05),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Image.asset(
                         'assets/logoImage.png',
-                        height: 30,
+                        height: constraints.maxHeight * 0.03,
                       ),
                       Row(
                         children: [
@@ -74,81 +74,93 @@ class HomePage extends GetView<ProductController> {
                 ),
               ),
             ),
-            //dropdown menu
-            SliverToBoxAdapter(
-              child: Container(
-                height: 50,
-                color: Colors.white,
-                child: Row(
-                  children: [
 
-                    TextButton(
-                      onPressed: () {
-                        Get.to(CartPage());
-                      },
-                      child: Text('Go To Cart'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        controller.fetchProducts();
-                      },
-                      child: Text('Fetch Product'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
             //slider
             SliverToBoxAdapter(
-              child: Container(
-                  child: CarouselSlider(
+              child: CarouselSlider(
                 options: CarouselOptions(
-                  height: 400,
+                  // height: constraints.maxHeight * 0.3,
                   autoPlay: true,
                 ),
                 items: imgList
                     .map((item) => Container(
                           child: Center(
                               child: Image.network(item,
-                                  fit: BoxFit.cover, width: 1000)),
+                                  fit: BoxFit.cover,
+                                  width: constraints.maxWidth)),
                         ))
                     .toList(),
-              )),
+              ),
             ),
             //items
-            constraints.maxWidth > 1000 ? returnGrid(4) : returnGrid(2),
+            constraints.maxWidth > 1000
+                ? returnGrid(4, constraints)
+                : returnGrid(2, constraints),
           ],
         );
       }),
     );
   }
 
-  Obx returnGrid(int gridCount) {
+  Obx returnGrid(int gridCount, BoxConstraints constraints) {
     return Obx(
       () => SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: gridCount,
             mainAxisSpacing: 10.0,
             crossAxisSpacing: 10.0,
-            childAspectRatio: 1.5),
+            childAspectRatio: 0.75),
         delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
           return Container(
-            color: index.isOdd ? Colors.white : Colors.black12,
-            height: 50.0,
+            margin: EdgeInsets.symmetric(horizontal: 8.0),
+            width: gridCount == 2
+                ? constraints.maxWidth * 0.5
+                : constraints.maxWidth * 0.2,
+            height: constraints.maxHeight * 0.2,
+            color: Colors.white,
             child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.network(controller.productList[index].imageURL),
-                  Text('${controller.productList[index].company}'),
-                  Text('${controller.productList[index].name}'),
-                  Text('${controller.productList[index].price}'),
-                  TextButton(
-                      onPressed: () {
-                        cartController.addCart(controller.productList[index]);
-                        //add to firebase user/cart
-                      },
-                      child: Text('Add Cart')),
+                  Expanded(
+                    flex: 5,
+                    child: Image.network(
+                      controller.productList[index].imageURL,
+                    ),
+                  ),
+                  Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${controller.productList[index].company}',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          RichText(
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            text: TextSpan(
+                              text: controller.productList[index].name,
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 2,
+                          ),
+                          Text(
+                            '₩${controller.productList[index].price}',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      )),
+                  IconButton(
+                    icon: Icon(Icons.shopping_cart),
+                    onPressed: () {
+                      //add to firebase user/cart
+                      cartController.addCart(controller.productList[index]);
+                    },
+                  ),
                 ],
               ),
             ),

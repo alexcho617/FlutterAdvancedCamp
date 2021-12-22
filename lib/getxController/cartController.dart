@@ -5,13 +5,13 @@ import 'package:hemweb/model/product.dart';
 
 //define the getx controllers here
 class CartController extends GetxController {
-
   var cartList = <Product>[].obs;
 
   // Future<void> fetchFirestore()async {
-  //   await 
+  //   await
   // }
   addCart(Product item) {
     cartList.add(item);
+    Get.snackbar('장바구니', '장바구니에 담겼습니다.',snackPosition: SnackPosition.BOTTOM);
   }
 }
