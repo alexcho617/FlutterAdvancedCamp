@@ -12,7 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hemweb/screens/login.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:hemweb/screens/my.dart';
-
+import 'package:hemweb/widgets/footer.dart';
 
 final List<String> imgList = [
   'https://firebasestorage.googleapis.com/v0/b/hemweb.appspot.com/o/bannerImage_1.jpeg?alt=media&token=e41cca75-d145-4c01-90a9-82e6ed3e24e3',
@@ -22,7 +22,6 @@ final List<String> imgList = [
   'https://firebasestorage.googleapis.com/v0/b/hemweb.appspot.com/o/bannerImage_5.jpeg?alt=media&token=f8c56d26-e3a0-4ade-9fa8-8385d0dacdf2',
   'https://firebasestorage.googleapis.com/v0/b/hemweb.appspot.com/o/bannerImage_6.jpeg?alt=media&token=b7ea05bb-1b46-4a6b-aac1-a59864dd4c56'
 ];
-
 
 class HomePage extends GetView<ProductController> {
   final authController = Get.put(AuthController());
@@ -68,8 +67,10 @@ class HomePage extends GetView<ProductController> {
                               onPressed: () {
                                 //var authController = Get.find<AuthController>();
                                 print(authController.loginState);
-                                if(authController.loginState == LoginState.loggedOut) Get.to(LoginPage());
-                                if(authController.loginState == LoginState.loggedIn) Get.to(MyPage());
+                                if (authController.loginState ==
+                                    LoginState.loggedOut) Get.to(LoginPage());
+                                if (authController.loginState ==
+                                    LoginState.loggedIn) Get.to(MyPage());
                               },
                               icon: Icon(Icons.person_outlined)),
                         ],
@@ -84,15 +85,16 @@ class HomePage extends GetView<ProductController> {
             SliverToBoxAdapter(
               child: CarouselSlider(
                 options: CarouselOptions(
-                  // height: constraints.maxHeight * 0.3,
+                  height: constraints.maxWidth < 1000 ? constraints.maxWidth* 0.4 : 400,
                   autoPlay: true,
                 ),
                 items: imgList
                     .map((item) => Container(
-                          child: Center(
-                              child: Image.network(item,
-                                  fit: BoxFit.cover,
-                                  width: constraints.maxWidth)),
+                          color: Colors.blue,
+                          child: Image.network(
+                            item,
+                            fit: BoxFit.cover,
+                          ),
                         ))
                     .toList(),
               ),
@@ -173,14 +175,18 @@ class HomePage extends GetView<ProductController> {
                       //var cartController = Get.find<CartController>();
                       //var authController = Get.find<AuthController>();
                       //add to firebase user/cart
-                      if(authController.loginState != LoginState.loggedOut){
-                        cartController.addCart(controller.productList[index], 1);
-                        DocumentReference userReference = FirebaseFirestore.instance.collection('user').doc(authController.auth.value.currentUser!.uid);
+                      if (authController.loginState != LoginState.loggedOut) {
+                        cartController.addCart(
+                            controller.productList[index], 1);
+                        DocumentReference userReference = FirebaseFirestore
+                            .instance
+                            .collection('user')
+                            .doc(authController.auth.value.currentUser!.uid);
                         await userReference.update({
-                          'cart' : FieldValue.arrayUnion([controller.productList[index].id])
+                          'cart': FieldValue.arrayUnion(
+                              [controller.productList[index].id])
                         }).then((value) => print("Cart added in DB"));
-                      }
-                      else{
+                      } else {
                         // Get.defaultDialog(
                         //     onConfirm: () {
                         //       Get.to(LoginPage());
@@ -199,26 +205,25 @@ class HomePage extends GetView<ProductController> {
                         //     ],
                         //   );
                         showDialog<String>(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                          title: const Text('로그인'),
-                          content: const Text('장바구니에 상품을 담으려면 로그인을 하셔야 합니다.'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Get.back(),
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Get.back();
-                                Get.to(LoginPage());
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        ),
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('로그인'),
+                            content: const Text('장바구니에 상품을 담으려면 로그인을 하셔야 합니다.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Get.back(),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Get.back();
+                                  Get.to(LoginPage());
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
                         );
-
                       }
                     },
                   ),
@@ -232,27 +237,3 @@ class HomePage extends GetView<ProductController> {
   }
 }
 
-class Footer extends StatelessWidget {
-  const Footer({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Container(
-        height: 100,
-        child: Column(
-          children: [
-            Divider(
-              height: 10,
-              thickness: 3,
-            ),
-            Text('Hiver Clone Coding'),
-            Text('Flutter Advanced Camp'),
-          ],
-        ),
-      ),
-    );
-  }
-}
