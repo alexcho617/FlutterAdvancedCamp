@@ -146,7 +146,7 @@ class AuthController extends GetxController {
         }
       }
     }
-    myuser.value.cart = cartSnapshot;
+    myuser.value.cart = cartController.cartList;
 
     return myuser;
   }

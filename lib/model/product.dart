@@ -8,6 +8,7 @@ class Product {
   var imageURL;
   var name;
   var company;
+  var isChecked = false;
 
   Product({this.id, this.price, this.imageURL, this.name, this.company});
 
