@@ -64,6 +64,7 @@ class LoginPage extends StatelessWidget {
                     color: Colors.black,
                     child: TextButton(onPressed: () {
                       authController.login(_emailController.text, _passwordController.text);
+                      Get.back();
                     }, child: Text("로그인",style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),))),
               ),
               Padding(padding: const EdgeInsets.only(top: 15.0),
@@ -86,6 +87,7 @@ class LoginPage extends StatelessWidget {
                       padding: const EdgeInsets.all(2.0),
                       child: TextButton(onPressed: (){
                         authController.register(_emailController.text, _passwordController.text);
+                        Get.back();
                       }, child: Text("회원가입", style: Theme.of(context).textTheme.button,)),
                     ),
                   ],

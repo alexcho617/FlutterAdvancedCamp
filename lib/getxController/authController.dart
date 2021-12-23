@@ -6,10 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hemweb/getxController/cartController.dart';
+import 'package:hemweb/getxController/productController.dart';
+import 'package:hemweb/model/user.dart';
+import 'package:hemweb/model/product.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
   late Rx<GoogleSignInAccount?> googleSignInAccount;
+  Rx<CustomUser> myuser = CustomUser().obs;
+  final productController = Get.put(ProductController());
+  final cartController = Get.put(CartController());
+
+  late Rx<User?> firebaseUser;
 
   late Rx<User?> firebaseUser;
 
@@ -44,6 +53,7 @@ class AuthController extends GetxController {
   void register(String email, password) async {
     try{
       await auth.value.createUserWithEmailAndPassword(email: email, password: password);
+      setUser();
     }catch(e){
       print("Error" + e.toString());
     }
@@ -52,6 +62,12 @@ class AuthController extends GetxController {
   void login(String email, password) async{
     try{
       await auth.value.signInWithEmailAndPassword(email: email, password: password);
+      if(auth.value.currentUser != null){
+        Get.snackbar("login", 'login success');
+        fetchUser();
+      }else{
+        Get.snackbar('login', 'login fail');
+      }
     }catch(e){
       print("Error" + e.toString());
     }
@@ -95,11 +111,36 @@ class AuthController extends GetxController {
 
   CollectionReference user = FirebaseFirestore.instance.collection('user');
   Future<void> setUser(){
+    //auth to state
+    myuser.value.email = auth.value.currentUser!.email;
+    myuser.value.cart = [];
 
+
+    //state to db
     return user.doc(auth.value.currentUser!.uid).set({
-      'name' : auth.value.currentUser!.displayName,
-      'email' : auth.value.currentUser!.email
+      'email' : myuser.value.email,
+      'cart' : myuser.value.cart
     }).then((value) => print("User Logined\n")).catchError((e) =>print("Set Failed\n"));
+  }
+
+  Future<Rx<CustomUser>> fetchUser() async {
+    //fetch user info from db
+    DocumentSnapshot userSnapshot = await firestore.collection('user').doc(auth.value.currentUser!.uid).get();
+    myuser.value.email = auth.value.currentUser!.email;
+    List<dynamic> cartSnapshot = userSnapshot['cart'];
+
+    //productController.productList
+
+    for(String i in cartSnapshot) {
+      print(i);
+      for (Product j in productController.productList) {
+        if (i == j.id) {
+          cartController.addCart(j);
+        }
+      }
+    }
+
+    return myuser;
   }
 
 }
