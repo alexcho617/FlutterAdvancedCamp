@@ -25,6 +25,8 @@ final List<String> imgList = [
 
 
 class HomePage extends GetView<ProductController> {
+  final authController = Get.put(AuthController());
+  final cartController = Get.put(CartController());
   bool? isNarrow;
 
   @override
@@ -64,7 +66,7 @@ class HomePage extends GetView<ProductController> {
                               icon: Icon(Icons.shopping_cart_outlined)),
                           IconButton(
                               onPressed: () {
-                                var authController = Get.find<AuthController>();
+                                //var authController = Get.find<AuthController>();
                                 print(authController.loginState);
                                 if(authController.loginState == LoginState.loggedOut) Get.to(LoginPage());
                                 if(authController.loginState == LoginState.loggedIn) Get.to(MyPage());
@@ -168,8 +170,8 @@ class HomePage extends GetView<ProductController> {
                   IconButton(
                     icon: Icon(Icons.shopping_cart),
                     onPressed: () async {
-                      var cartController = Get.find<CartController>();
-                      var authController = Get.find<AuthController>();
+                      //var cartController = Get.find<CartController>();
+                      //var authController = Get.find<AuthController>();
                       //add to firebase user/cart
                       if(authController.loginState != LoginState.loggedOut){
                         cartController.addCart(controller.productList[index], 1);

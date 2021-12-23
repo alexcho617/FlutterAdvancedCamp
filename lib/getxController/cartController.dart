@@ -1,7 +1,9 @@
 // ignore_for_file: file_names
 
 import 'package:get/get.dart';
+import 'package:hemweb/getxController/authController.dart';
 import 'package:hemweb/model/product.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 //define the getx controllers here
 class CartController extends GetxController {
@@ -13,9 +15,29 @@ class CartController extends GetxController {
   void onInit(){
     super.onInit();
 
-    ever(cartList, (_){
+    var authController = Get.find<AuthController>();
+    CollectionReference userReference = FirebaseFirestore.instance.collection('user');
+    ever(cartList, (_) async{
       print("EVER called");
+      try
+      {
+        await userReference.doc(authController.auth.value.currentUser?.uid)
+            .update({
+          'cart': toIndexList(cartList),
+        }).then((value) => print("Cart synced with DB"));
+      }catch (e){
+        print('err cart controller line 29');
+        print(e);
+      }
     });
+  }
+
+  List<String> toIndexList(List<Product> cartList){
+    List<String> cartSnapshot = [];
+    for(Product item in cartList){
+      cartSnapshot.add(item.id);
+    }
+    return cartSnapshot;
   }
 
   addCart(Product item, int option) {

@@ -38,10 +38,8 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       builder:() => GetMaterialApp(
         title: 'Flutter Advacned Camp HEM',
-        initialBinding: BindingsBuilder(() {
-          Get.put(CartController());
+        initialBinding: BindingsBuilder((){
           Get.put(ProductController());
-          Get.put(AuthController());
         }),
         home: HomePage(),
         // home: ResponsivePage()

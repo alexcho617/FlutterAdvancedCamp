@@ -20,7 +20,6 @@ class AuthController extends GetxController {
   static AuthController instance = Get.find();
   late Rx<GoogleSignInAccount?> googleSignInAccount;
   Rx<CustomUser> myuser = CustomUser().obs;
-  var productController = Get.find<ProductController>();
 
   LoginState loginState = LoginState.loggedOut;
 
@@ -132,7 +131,8 @@ class AuthController extends GetxController {
   }
 
   Future<Rx<CustomUser>> fetchUser() async {
-    final cartController = Get.find<CartController>();
+    var cartController = Get.find<CartController>();
+    var productController = Get.find<ProductController>();
 
     //fetch user info from db
     DocumentSnapshot userSnapshot = await firestore.collection('user').doc(auth.value.currentUser!.uid).get();
