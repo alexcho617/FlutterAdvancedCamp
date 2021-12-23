@@ -26,8 +26,6 @@ final List<String> imgList = [
 
 
 class HomePage extends GetView<ProductController> {
-  final cartController = Get.put(CartController());
-  final authController = Get.put(AuthController());
   bool? isNarrow;
 
   @override
@@ -67,6 +65,7 @@ class HomePage extends GetView<ProductController> {
                               icon: Icon(Icons.shopping_cart_outlined)),
                           IconButton(
                               onPressed: () {
+                                var authController = Get.find<AuthController>();
                                 print(authController.loginState);
                                 if(authController.loginState == LoginState.loggedOut) Get.to(LoginPage());
                                 if(authController.loginState == LoginState.loggedIn) Get.to(MyPage());
@@ -162,12 +161,17 @@ class HomePage extends GetView<ProductController> {
                   IconButton(
                     icon: Icon(Icons.shopping_cart),
                     onPressed: () async {
+                      var cartController = Get.find<CartController>();
                       //add to firebase user/cart
                       cartController.addCart(controller.productList[index]);
-                      DocumentReference userReference = FirebaseFirestore.instance.collection('user').doc(authController.auth.value.currentUser!.uid);
-                      await userReference.update({
-                        'cart' : FieldValue.arrayUnion([controller.productList[index].id])
-                      }).then((value) => print("Cart added in DB"));
+                      // Deprecated way to add DB
+                      //'''
+                      // DocumentReference userReference = FirebaseFirestore.instance.collection('user').doc(authController.auth.value.currentUser!.uid);
+                      // await userReference.update({
+                      //   'cart' : FieldValue.arrayUnion([controller.productList[index].id])
+                      // }).then((value) => print("Cart added in DB"));
+                      //'''
+                      //
                     },
                   ),
                 ],

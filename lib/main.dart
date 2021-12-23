@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hemweb/getxController/authController.dart';
+import 'package:hemweb/getxController/cartController.dart';
 import 'package:hemweb/getxController/productController.dart';
 import 'package:hemweb/screens/home.dart';
 import 'package:hemweb/screens/login.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Advacned Camp HEM',
       initialBinding: BindingsBuilder(() {
+        Get.put(CartController());
         Get.put(ProductController());
         Get.put(AuthController());
       }),
