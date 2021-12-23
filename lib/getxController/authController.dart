@@ -11,12 +11,18 @@ import 'package:hemweb/getxController/productController.dart';
 import 'package:hemweb/model/user.dart';
 import 'package:hemweb/model/product.dart';
 
+enum LoginState{
+  loggedIn,
+  loggedOut
+}
+
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
   late Rx<GoogleSignInAccount?> googleSignInAccount;
   Rx<CustomUser> myuser = CustomUser().obs;
   final productController = Get.put(ProductController());
   final cartController = Get.put(CartController());
+  LoginState loginState = LoginState.loggedOut;
 
   late Rx<User?> firebaseUser;
 
@@ -51,6 +57,7 @@ class AuthController extends GetxController {
   void register(String email, password) async {
     try{
       await auth.value.createUserWithEmailAndPassword(email: email, password: password);
+      loginState = LoginState.loggedIn;
       setUser();
     }catch(e){
       print("Error" + e.toString());
@@ -61,8 +68,9 @@ class AuthController extends GetxController {
     try{
       await auth.value.signInWithEmailAndPassword(email: email, password: password);
       if(auth.value.currentUser != null){
-        Get.snackbar("login", 'login success');
+        loginState = LoginState.loggedIn;
         fetchUser();
+        Get.snackbar("login", 'login success');
       }else{
         Get.snackbar('login', 'login fail');
       }
@@ -73,6 +81,7 @@ class AuthController extends GetxController {
 
   void signOut() async {
     await auth.value.signOut();
+    loginState = LoginState.loggedOut;
   }
 
   void signInWithGoogle() async {
@@ -99,7 +108,7 @@ class AuthController extends GetxController {
           }
         }
         setUser();
-
+        loginState = LoginState.loggedIn;
       }
     } catch (e) {
       Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
@@ -130,13 +139,14 @@ class AuthController extends GetxController {
     //productController.productList
 
     for(String i in cartSnapshot) {
-      print(i);
+      print("fetch success! current cart item id: "+i);
       for (Product j in productController.productList) {
         if (i == j.id) {
           cartController.addCart(j);
         }
       }
     }
+    myuser.value.cart = cartSnapshot;
 
     return myuser;
   }

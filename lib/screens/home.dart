@@ -11,6 +11,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hemweb/screens/login.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:hemweb/screens/my.dart';
 
 const String testImageURL =
     'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80';
@@ -26,6 +27,7 @@ final List<String> imgList = [
 
 class HomePage extends GetView<ProductController> {
   final cartController = Get.put(CartController());
+  final authController = Get.put(AuthController());
   bool? isNarrow;
 
   @override
@@ -65,7 +67,9 @@ class HomePage extends GetView<ProductController> {
                               icon: Icon(Icons.shopping_cart_outlined)),
                           IconButton(
                               onPressed: () {
-                                Get.to(LoginPage());
+                                print(authController.loginState);
+                                if(authController.loginState == LoginState.loggedOut) Get.to(LoginPage());
+                                if(authController.loginState == LoginState.loggedIn) Get.to(MyPage());
                               },
                               icon: Icon(Icons.person_outlined)),
                         ],
@@ -157,9 +161,13 @@ class HomePage extends GetView<ProductController> {
                       )),
                   IconButton(
                     icon: Icon(Icons.shopping_cart),
-                    onPressed: () {
+                    onPressed: () async {
                       //add to firebase user/cart
                       cartController.addCart(controller.productList[index]);
+                      DocumentReference userReference = FirebaseFirestore.instance.collection('user').doc(authController.auth.value.currentUser!.uid);
+                      await userReference.update({
+                        'cart' : FieldValue.arrayUnion([controller.productList[index].id])
+                      }).then((value) => print("Cart added in DB"));
                     },
                   ),
                 ],
