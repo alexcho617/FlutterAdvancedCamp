@@ -19,7 +19,7 @@ class Footer extends StatelessWidget {
               thickness: 3,
             ),
             Text(
-              'Flutter Advanced Camp',
+              'Flutter Advanced Camp 2021-Winter @ HGU with Software Factory',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text('Hiver Clone Coding Using GetX'),
