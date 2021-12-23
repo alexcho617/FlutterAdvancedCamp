@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Advacned Camp HEM',
       initialBinding: BindingsBuilder(() {
         Get.put(ProductController());
+        Get.put(AuthController());
       }),
       home: HomePage(),
     );
