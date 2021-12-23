@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hemweb/getxController/authController.dart';
 import 'package:hemweb/getxController/cartController.dart';
@@ -23,6 +22,7 @@ final List<String> imgList = [
   'https://firebasestorage.googleapis.com/v0/b/hemweb.appspot.com/o/bannerImage_5.jpeg?alt=media&token=f8c56d26-e3a0-4ade-9fa8-8385d0dacdf2',
   'https://firebasestorage.googleapis.com/v0/b/hemweb.appspot.com/o/bannerImage_6.jpeg?alt=media&token=b7ea05bb-1b46-4a6b-aac1-a59864dd4c56'
 ];
+
 
 class HomePage extends GetView<ProductController> {
   bool? isNarrow;
@@ -169,16 +169,55 @@ class HomePage extends GetView<ProductController> {
                     icon: Icon(Icons.shopping_cart),
                     onPressed: () async {
                       var cartController = Get.find<CartController>();
+                      var authController = Get.find<AuthController>();
                       //add to firebase user/cart
-                      cartController.addCart(controller.productList[index]);
-                      // Deprecated way to add DB
-                      //'''
-                      // DocumentReference userReference = FirebaseFirestore.instance.collection('user').doc(authController.auth.value.currentUser!.uid);
-                      // await userReference.update({
-                      //   'cart' : FieldValue.arrayUnion([controller.productList[index].id])
-                      // }).then((value) => print("Cart added in DB"));
-                      //'''
-                      //
+                      if(authController.loginState != LoginState.loggedOut){
+                        cartController.addCart(controller.productList[index], 1);
+                        DocumentReference userReference = FirebaseFirestore.instance.collection('user').doc(authController.auth.value.currentUser!.uid);
+                        await userReference.update({
+                          'cart' : FieldValue.arrayUnion([controller.productList[index].id])
+                        }).then((value) => print("Cart added in DB"));
+                      }
+                      else{
+                        // Get.defaultDialog(
+                        //     onConfirm: () {
+                        //       Get.to(LoginPage());
+                        //     },
+                        //     middleText: "장바구니에 상품을 담으려면 로그인을 하셔야 합니다."
+                        //   AlertDialog(
+                        //     title: Text('로그인'),
+                        //     content: Text('장바구니에 상품을 담으려면 로그인을 하셔야 합니다.'),
+                        //     actions: [
+                        //       TextButton(onPressed: (){
+                        //         Get.to(LoginPage());
+                        //       }, child: Text('ok')),
+                        //       TextButton(onPressed: (){
+                        //         Get.back();
+                        //       }, child: Text('cancel'))
+                        //     ],
+                        //   );
+                        showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                          title: const Text('로그인'),
+                          content: const Text('장바구니에 상품을 담으려면 로그인을 하셔야 합니다.'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Get.back(),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Get.back();
+                                Get.to(LoginPage());
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                        );
+
+                      }
                     },
                   ),
                 ],

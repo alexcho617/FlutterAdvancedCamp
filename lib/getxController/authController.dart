@@ -144,7 +144,7 @@ class AuthController extends GetxController {
     for(String i in cartSnapshot) {
       for (Product j in productController.productList) {
         if (i == j.id) {
-          cartController.addCart(j);
+          cartController.addCart(j, 0);
         }
       }
     }
