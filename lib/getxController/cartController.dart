@@ -9,9 +9,15 @@ class CartController extends GetxController {
   var checkList = <String>[].obs;
   var allCheck = false;
 
-  // Future<void> fetchFirestore()async {
-  //   await
-  // }
+  @override
+  void onInit(){
+    super.onInit();
+
+    ever(cartList, (_){
+      print("EVER called");
+    });
+  }
+
   addCart(Product item, int option) {
     if(!cartList.contains(item)){
       if(option == 1){

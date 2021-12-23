@@ -13,8 +13,7 @@ import 'package:hemweb/screens/login.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:hemweb/screens/my.dart';
 
-const String testImageURL =
-    'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80';
+
 final List<String> imgList = [
   'https://firebasestorage.googleapis.com/v0/b/hemweb.appspot.com/o/bannerImage_1.jpeg?alt=media&token=e41cca75-d145-4c01-90a9-82e6ed3e24e3',
   'https://firebasestorage.googleapis.com/v0/b/hemweb.appspot.com/o/bannerImage_2.jpeg?alt=media&token=16ba8e60-ab07-4b2b-add5-90d7db72d3b3',
@@ -26,8 +25,6 @@ final List<String> imgList = [
 
 
 class HomePage extends GetView<ProductController> {
-  final cartController = Get.put(CartController());
-  final authController = Get.put(AuthController());
   bool? isNarrow;
 
   @override
@@ -67,6 +64,7 @@ class HomePage extends GetView<ProductController> {
                               icon: Icon(Icons.shopping_cart_outlined)),
                           IconButton(
                               onPressed: () {
+                                var authController = Get.find<AuthController>();
                                 print(authController.loginState);
                                 if(authController.loginState == LoginState.loggedOut) Get.to(LoginPage());
                                 if(authController.loginState == LoginState.loggedIn) Get.to(MyPage());
@@ -101,6 +99,8 @@ class HomePage extends GetView<ProductController> {
             constraints.maxWidth > 1000
                 ? returnGrid(4, constraints)
                 : returnGrid(2, constraints),
+            //Footer
+            Footer()
           ],
         );
       }),
@@ -108,6 +108,12 @@ class HomePage extends GetView<ProductController> {
   }
 
   Obx returnGrid(int gridCount, BoxConstraints constraints) {
+    bool isWideLayout;
+    if (gridCount == 4) {
+      isWideLayout = true;
+    } else {
+      isWideLayout = false;
+    }
     return Obx(
       () => SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -162,6 +168,7 @@ class HomePage extends GetView<ProductController> {
                   IconButton(
                     icon: Icon(Icons.shopping_cart),
                     onPressed: () async {
+                      var cartController = Get.find<CartController>();
                       //add to firebase user/cart
                       if(authController.loginState != LoginState.loggedOut){
                         cartController.addCart(controller.productList[index], 1);
@@ -217,6 +224,31 @@ class HomePage extends GetView<ProductController> {
             ),
           );
         }, childCount: controller.productList.length),
+      ),
+    );
+  }
+}
+
+class Footer extends StatelessWidget {
+  const Footer({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Container(
+        height: 100,
+        child: Column(
+          children: [
+            Divider(
+              height: 10,
+              thickness: 3,
+            ),
+            Text('Hiver Clone Coding'),
+            Text('Flutter Advanced Camp'),
+          ],
+        ),
       ),
     );
   }
