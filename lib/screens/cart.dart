@@ -65,6 +65,7 @@ class CartPage extends StatelessWidget {
                                     (element) => element.id == item);
                                 // cartController.checkList.remove(item);
                                 print(item);
+
                               }
                             },
                             child: Text(

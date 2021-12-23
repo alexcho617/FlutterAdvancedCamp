@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hemweb/getxController/authController.dart';
+import 'package:hemweb/getxController/cartController.dart';
 import 'package:hemweb/getxController/productController.dart';
 import 'package:hemweb/screens/home.dart';
 import 'package:hemweb/screens/login.dart';
@@ -34,12 +35,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return ScreenUtilInit(
-
       builder:() => GetMaterialApp(
         title: 'Flutter Advacned Camp HEM',
         initialBinding: BindingsBuilder(() {
+          Get.put(CartController());
           Get.put(ProductController());
           Get.put(AuthController());
         }),

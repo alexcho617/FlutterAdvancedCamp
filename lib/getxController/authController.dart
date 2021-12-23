@@ -20,8 +20,8 @@ class AuthController extends GetxController {
   static AuthController instance = Get.find();
   late Rx<GoogleSignInAccount?> googleSignInAccount;
   Rx<CustomUser> myuser = CustomUser().obs;
-  final productController = Get.put(ProductController());
-  final cartController = Get.put(CartController());
+  var productController = Get.find<ProductController>();
+
   LoginState loginState = LoginState.loggedOut;
 
   late Rx<User?> firebaseUser;
@@ -81,6 +81,7 @@ class AuthController extends GetxController {
 
   void signOut() async {
     await auth.value.signOut();
+    myuser.value.cart = [];
     loginState = LoginState.loggedOut;
   }
 
@@ -131,6 +132,8 @@ class AuthController extends GetxController {
   }
 
   Future<Rx<CustomUser>> fetchUser() async {
+    final cartController = Get.find<CartController>();
+
     //fetch user info from db
     DocumentSnapshot userSnapshot = await firestore.collection('user').doc(auth.value.currentUser!.uid).get();
     myuser.value.email = auth.value.currentUser!.email;
@@ -139,13 +142,13 @@ class AuthController extends GetxController {
     //productController.productList
 
     for(String i in cartSnapshot) {
-      print("fetch success! current cart item id: "+i);
       for (Product j in productController.productList) {
         if (i == j.id) {
           cartController.addCart(j);
         }
       }
     }
+    print("fetch success! current cart item id: "+ cartSnapshot.toString());
     myuser.value.cart = cartController.cartList;
 
     return myuser;

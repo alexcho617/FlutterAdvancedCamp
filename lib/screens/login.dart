@@ -8,7 +8,7 @@ import 'package:hemweb/getxController/authController.dart';
 import '/screens/home.dart';
 
 class LoginPage extends StatelessWidget {
-  final authController = Get.put(AuthController());
+  final authController = Get.find<AuthController>();
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
