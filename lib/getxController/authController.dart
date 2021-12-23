@@ -142,7 +142,7 @@ class AuthController extends GetxController {
       print("fetch success! current cart item id: "+i);
       for (Product j in productController.productList) {
         if (i == j.id) {
-          cartController.addCart(j);
+          cartController.addCart(j, 0);
         }
       }
     }

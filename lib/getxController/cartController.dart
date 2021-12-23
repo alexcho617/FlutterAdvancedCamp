@@ -12,11 +12,14 @@ class CartController extends GetxController {
   // Future<void> fetchFirestore()async {
   //   await
   // }
-  addCart(Product item) {
+  addCart(Product item, int option) {
     if(!cartList.contains(item)){
+      if(option == 1){
+        Get.snackbar('장바구니', '장바구니에 담겼습니다.',snackPosition: SnackPosition.BOTTOM);
+      }
       item.isChecked = false;
       cartList.add(item);
-      Get.snackbar('장바구니', '장바구니에 담겼습니다.',snackPosition: SnackPosition.BOTTOM);
+
     }
     else{
       Get.snackbar('장바구니', '이미 장바구니에 존재하는 상품입니다.',snackPosition: SnackPosition.BOTTOM);
