@@ -20,10 +20,11 @@ class AuthController extends GetxController {
 
   late Rx<User?> firebaseUser;
 
+  late Rx<User?> firebaseUser;
+
   @override
   void onInit(){
     super.onInit();
-
 
   }
 
