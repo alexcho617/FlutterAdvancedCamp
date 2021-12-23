@@ -169,6 +169,7 @@ class HomePage extends GetView<ProductController> {
                     icon: Icon(Icons.shopping_cart),
                     onPressed: () async {
                       var cartController = Get.find<CartController>();
+                      var authController = Get.find<AuthController>();
                       //add to firebase user/cart
                       if(authController.loginState != LoginState.loggedOut){
                         cartController.addCart(controller.productList[index], 1);
