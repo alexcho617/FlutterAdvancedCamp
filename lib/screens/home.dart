@@ -99,10 +99,14 @@ class HomePage extends GetView<ProductController> {
                     .toList(),
               ),
             ),
+            SliverToBoxAdapter(
+              child: SizedBox(height: 100,),
+            ),
             //items
             constraints.maxWidth > 1000
                 ? returnGrid(4, constraints)
                 : returnGrid(2, constraints),
+
             //Footer
             Footer()
           ],

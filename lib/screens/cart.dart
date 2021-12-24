@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hemweb/screens/home.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -168,6 +169,7 @@ class CartPage extends StatelessWidget {
                                     id: cartController.cartList[index].id,
                                     //id는 왜 필요하고 index는
                                     index: index,
+                                    constraints: constraints,
                                   );
                                 },
                               )
@@ -229,6 +231,7 @@ class ProductTile extends StatelessWidget {
     required this.brand,
     required this.index,
     required this.id,
+    required this.constraints
   });
 
   String imageUrl;
@@ -237,7 +240,7 @@ class ProductTile extends StatelessWidget {
   String brand;
   String id;
   int index;
-
+  BoxConstraints constraints;
   final CartController cartController = Get.put(CartController());
 
 //여기에 함수를 만들어서 controller에 접근 가능..?
@@ -247,61 +250,68 @@ class ProductTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GetBuilder<CartController>(
-                builder: (_) => Checkbox(
-                    //여기서 ischecked가 cartlist꺼야 해...그럴려면...
-                    value: _.cartList[index].isChecked,
-                    onChanged: (value) {
-                      // print('value before : $value');
-                      // print('ischeckd before : ${_.cartList[index].isChecked}');
-                      _.itemChange(value!, index);
-                      // value = cartController.cartList[index].isChecked;
-                      // print('value after : $value');
-                      // print('ischeckd after : ${_.cartList[index].isChecked}');
-                      if (value == true) {
-                        _.checkList.add(id);
-                        print(_.checkList);
-                      } else {
-                        _.checkList.removeWhere((element) => element == id);
-                        print(_.checkList);
-                      }
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GetBuilder<CartController>(
+            builder: (_) => Checkbox(
+                //여기서 ischecked가 cartlist꺼야 해...그럴려면...
+                value: _.cartList[index].isChecked,
+                onChanged: (value) {
+                  _.itemChange(value!, index);
+                  if (value == true) {
+                    _.checkList.add(id);
+                    print(_.checkList);
+                  } else {
+                    _.checkList.removeWhere((element) => element == id);
+                    print(_.checkList);
+                  }
 
-                      print(_.cartList[index].isChecked);
-                    }),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                  child: Image.network(
-                imageUrl,
-                width: 100,
-                height: 100,
-                fit: BoxFit.fill,
-              )),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(brand),
-                  Text(
-                    name + "\n" + price + '원',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                ],
-              ),
-            ),
-          ],
+                  print(_.cartList[index].isChecked);
+                }),
+          ),
         ),
-        IconButton(onPressed: () {}, icon: Icon(Icons.cancel)),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+              child: Image.network(
+            imageUrl,
+            width: 100,
+            height: 100,
+            fit: BoxFit.fill,
+          )),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(brand,
+    style : TextStyle(
+      fontSize: constraints.maxWidth < 1000 ? 8.sp : 18,
+                   )),
+                RichText(
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  text: TextSpan(
+                    text: name,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: constraints.maxWidth < 1000 ? 10.sp : 18,
+                        color: Colors.black),
+                  ),
+                ),
+                Text(price + '원',
+                    style : TextStyle(
+                      fontSize: 8.sp,
+                    )),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
