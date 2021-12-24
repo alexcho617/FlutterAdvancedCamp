@@ -2,7 +2,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hemweb/screens/home.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -10,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
 import 'package:hemweb/getxController/authController.dart';
 import 'package:hemweb/getxController/cartController.dart';
+import 'package:hemweb/widgets/footer.dart';
 
 import 'login.dart';
 import 'my.dart';
@@ -22,122 +22,129 @@ class CartPage extends StatelessWidget {
     final CartController cartController = Get.put(CartController());
     return Scaffold(body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-      return CustomScrollView(slivers: <Widget>[
-        SliverAppBar(
-          backgroundColor: Colors.white,
-          pinned: true,
-          snap: true,
-          floating: true,
-          expandedHeight: constraints.maxHeight * 0.05,
-          flexibleSpace: FlexibleSpaceBar(
-            //header
-
-            title: Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: constraints.maxWidth * 0.05),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    'assets/logoImage.png',
-                    height: constraints.maxHeight * 0.03,
-                  ),
-                  Row(
-                    children: [
-                      IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-                      IconButton(
-                          onPressed: () {
-                            Get.to(CartPage());
-                          },
-                          icon: Icon(Icons.shopping_cart_outlined)),
-                      IconButton(
-                          onPressed: () {
-                            var authController = Get.find<AuthController>();
-                            print(authController.loginState);
-                            if (authController.loginState ==
-                                LoginState.loggedOut) Get.to(LoginPage());
-                            if (authController.loginState ==
-                                LoginState.loggedIn) Get.to(MyPage());
-                          },
-                          icon: Icon(Icons.person_outlined)),
-                    ],
-                  ),
-                ],
+      return CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            backgroundColor: Colors.white,
+            pinned: true,
+            snap: true,
+            floating: true,
+            expandedHeight: constraints.maxHeight * 0.05,
+            flexibleSpace: FlexibleSpaceBar(
+              //header
+              title: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: constraints.maxWidth * 0.05),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.to(HomePage());
+                      },
+                      child: Image.asset(
+                        'assets/logoImage.png',
+                        height: constraints.maxHeight * 0.03,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+                        IconButton(
+                            onPressed: () {
+                              //Get.to(CartPage());
+                            },
+                            icon: Icon(Icons.shopping_cart_outlined)),
+                        IconButton(
+                            onPressed: () {
+                              var authController = Get.find<AuthController>();
+                              print(authController.loginState);
+                              if (authController.loginState ==
+                                  LoginState.loggedOut) Get.to(LoginPage());
+                              if (authController.loginState ==
+                                  LoginState.loggedIn) Get.to(MyPage());
+                            },
+                            icon: Icon(Icons.person_outlined)),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        SliverToBoxAdapter(
-          child: SafeArea(
+          SliverToBoxAdapter(
+            child: SafeArea(
               child: Center(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 50.0, top: 30),
-                  child: Text(
-                    '장바구니',
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 50.0, top: 30),
+                      child: Text(
+                        '장바구니',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Divider(
-                  height: 50,
-                  indent: 0,
-                  endIndent: 0,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Divider(
+                      height: 50,
+                      indent: 0,
+                      endIndent: 0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 50),
+                      child: Column(
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              GetBuilder<CartController>(
-                                builder: (_) => Checkbox(
-                                    value: _.allCheck,
-                                    onChanged: (value) {
-                                      _.allChange(value!);
-                                    }),
+                              Row(
+                                children: [
+                                  GetBuilder<CartController>(
+                                    builder: (_) => Checkbox(
+                                        value: _.allCheck,
+                                        onChanged: (value) {
+                                          _.allChange(value!);
+                                        }),
+                                  ),
+                                  Text('전체선택'),
+                                ],
                               ),
-                              Text('전체선택'),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      for (var item
+                                          in cartController.checkList) {
+                                        cartController.cartList.removeWhere(
+                                            (element) => element.id == item);
+                                        // cartController.checkList.remove(item);
+                                        print(item);
+                                      }
+                                    },
+                                    child: Text(
+                                      '선택삭제',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  for (var item in cartController.checkList) {
-                                    cartController.cartList.removeWhere(
-                                        (element) => element.id == item);
-                                    // cartController.checkList.remove(item);
-                                    print(item);
-                                  }
-                                },
-                                child: Text(
-                                  '선택삭제',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.white,
-                                ),
-                              ),
-                            ],
+                          Divider(
+                            height: 50,
+                            indent: 0,
+                            endIndent: 0,
+                            thickness: 2,
+                            color: Colors.black,
                           ),
-                        ],
-                      ),
-                      Divider(
-                        height: 50,
-                        indent: 0,
-                        endIndent: 0,
-                        thickness: 2,
-                        color: Colors.black,
-                      ),
 
                       Text(
                         '상품정보',
@@ -216,9 +223,10 @@ class CartPage extends StatelessWidget {
                 ),
               ],
             ),
-          )),
-        )
-      ]);
+          ),
+          Footer()
+        ],
+      );
     }));
   }
 }

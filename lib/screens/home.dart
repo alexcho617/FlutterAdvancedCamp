@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hemweb/getxController/authController.dart';
 import 'package:hemweb/getxController/cartController.dart';
@@ -50,9 +51,14 @@ class HomePage extends GetView<ProductController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset(
-                        'assets/logoImage.png',
-                        height: constraints.maxHeight * 0.03,
+                      InkWell(
+                        onTap: (){
+                          Get.to(HomePage());
+                        },
+                        child: Image.asset(
+                          'assets/logoImage.png',
+                          height: constraints.maxHeight * 0.03,
+                        ),
                       ),
                       Row(
                         children: [
@@ -60,7 +66,29 @@ class HomePage extends GetView<ProductController> {
                               onPressed: () {}, icon: Icon(Icons.search)),
                           IconButton(
                               onPressed: () {
-                                Get.to(CartPage());
+                                if(authController.loginState == LoginState.loggedOut){
+                                  showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) => AlertDialog(
+                                      title: const Text('로그인'),
+                                      content: const Text('장바구니에 상품을 담으려면 로그인을 하셔야 합니다.'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () => Get.back(),
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Get.back();
+                                            Get.to(LoginPage());
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                                if(authController.loginState == LoginState.loggedIn) Get.to(CartPage());
                               },
                               icon: Icon(Icons.shopping_cart_outlined)),
                           IconButton(
@@ -126,12 +154,12 @@ class HomePage extends GetView<ProductController> {
       () => SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: gridCount,
-            mainAxisSpacing: 10.0,
-            crossAxisSpacing: 10.0,
+            mainAxisSpacing: 10.0.h,
+            crossAxisSpacing: 10.0.w,
             childAspectRatio: 0.75),
         delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
           return Container(
-            margin: EdgeInsets.symmetric(horizontal: 8.0),
+            margin: EdgeInsets.symmetric(horizontal: 8.0.w),
             width: gridCount == 2
                 ? constraints.maxWidth * 0.5
                 : constraints.maxWidth * 0.2,
