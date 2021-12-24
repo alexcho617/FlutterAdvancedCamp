@@ -61,7 +61,29 @@ class HomePage extends GetView<ProductController> {
                               onPressed: () {}, icon: Icon(Icons.search)),
                           IconButton(
                               onPressed: () {
-                                Get.to(CartPage());
+                                if(authController.loginState != LoginState.loggedOut){
+                                  showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) => AlertDialog(
+                                      title: const Text('로그인'),
+                                      content: const Text('장바구니에 상품을 담으려면 로그인을 하셔야 합니다.'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () => Get.back(),
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Get.back();
+                                            Get.to(LoginPage());
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                                if(authController.loginState == LoginState.loggedIn) Get.to(CartPage());
                               },
                               icon: Icon(Icons.shopping_cart_outlined)),
                           IconButton(
