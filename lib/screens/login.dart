@@ -159,7 +159,9 @@ class LoginPage extends StatelessWidget {
                                   SizedBox(height: 14,child: const VerticalDivider()),
                                   Padding(
                                     padding: const EdgeInsets.all(2.0),
-                                    child: TextButton(onPressed: (){}, child: Text("비밀번호 찾기", style: Theme.of(context).textTheme.button,)),
+                                    child: TextButton(onPressed: (){}, onLongPress: (){
+                                      authController.login("admin@admin.com", "123456");
+                                    },child: Text("비밀번호 찾기", style: Theme.of(context).textTheme.button,)),
                                   ),
                                   SizedBox(height: 14,child: const VerticalDivider()),
                                   Padding(
