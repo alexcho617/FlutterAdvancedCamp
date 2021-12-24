@@ -51,9 +51,14 @@ class HomePage extends GetView<ProductController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset(
-                        'assets/logoImage.png',
-                        height: constraints.maxHeight * 0.03,
+                      InkWell(
+                        onTap: (){
+                          Get.to(HomePage());
+                        },
+                        child: Image.asset(
+                          'assets/logoImage.png',
+                          height: constraints.maxHeight * 0.03,
+                        ),
                       ),
                       Row(
                         children: [
@@ -61,7 +66,7 @@ class HomePage extends GetView<ProductController> {
                               onPressed: () {}, icon: Icon(Icons.search)),
                           IconButton(
                               onPressed: () {
-                                if(authController.loginState != LoginState.loggedOut){
+                                if(authController.loginState == LoginState.loggedOut){
                                   showDialog<String>(
                                     context: context,
                                     builder: (BuildContext context) => AlertDialog(

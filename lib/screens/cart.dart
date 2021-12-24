@@ -32,39 +32,42 @@ class CartPage extends StatelessWidget {
             expandedHeight: constraints.maxHeight * 0.05,
             flexibleSpace: FlexibleSpaceBar(
               //header
-
-              title: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: constraints.maxWidth * 0.05),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
+            title: Padding(
+              padding:
+                  EdgeInsets.symmetric(horizontal: constraints.maxWidth * 0.05),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: (){
+                      Get.to(HomePage());
+                    },
+                    child: Image.asset(
                       'assets/logoImage.png',
                       height: constraints.maxHeight * 0.03,
                     ),
-                    Row(
-                      children: [
-                        IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-                        IconButton(
-                            onPressed: () {
-                              Get.to(CartPage());
-                            },
-                            icon: Icon(Icons.shopping_cart_outlined)),
-                        IconButton(
-                            onPressed: () {
-                              var authController = Get.find<AuthController>();
-                              print(authController.loginState);
-                              if (authController.loginState ==
-                                  LoginState.loggedOut) Get.to(LoginPage());
-                              if (authController.loginState ==
-                                  LoginState.loggedIn) Get.to(MyPage());
-                            },
-                            icon: Icon(Icons.person_outlined)),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                  Row(
+                    children: [
+                      IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+                      IconButton(
+                          onPressed: () {
+                            //Get.to(CartPage());
+                          },
+                          icon: Icon(Icons.shopping_cart_outlined)),
+                      IconButton(
+                          onPressed: () {
+                            var authController = Get.find<AuthController>();
+                            print(authController.loginState);
+                            if (authController.loginState ==
+                                LoginState.loggedOut) Get.to(LoginPage());
+                            if (authController.loginState ==
+                                LoginState.loggedIn) Get.to(MyPage());
+                          },
+                          icon: Icon(Icons.person_outlined)),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
