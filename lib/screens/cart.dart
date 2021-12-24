@@ -37,16 +37,21 @@ class CartPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset(
-                    'assets/logoImage.png',
-                    height: constraints.maxHeight * 0.03,
+                  InkWell(
+                    onTap: (){
+                      Get.to(HomePage());
+                    },
+                    child: Image.asset(
+                      'assets/logoImage.png',
+                      height: constraints.maxHeight * 0.03,
+                    ),
                   ),
                   Row(
                     children: [
                       IconButton(onPressed: () {}, icon: Icon(Icons.search)),
                       IconButton(
                           onPressed: () {
-                            Get.to(CartPage());
+                            //Get.to(CartPage());
                           },
                           icon: Icon(Icons.shopping_cart_outlined)),
                       IconButton(

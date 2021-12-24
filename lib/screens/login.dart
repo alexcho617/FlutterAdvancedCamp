@@ -7,6 +7,7 @@ import 'package:hemweb/getxController/authController.dart';
 
 import '/screens/cart.dart';
 import '/screens/my.dart';
+import '/screens/home.dart';
 
 class LoginPage extends StatelessWidget {
   final authController = Get.find<AuthController>();
@@ -36,9 +37,14 @@ class LoginPage extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Image.asset(
-                          'assets/logoImage.png',
-                          height: constraints.maxHeight * 0.03,
+                        InkWell(
+                          onTap: (){
+                            Get.to(HomePage());
+                          },
+                          child: Image.asset(
+                            'assets/logoImage.png',
+                            height: constraints.maxHeight * 0.03,
+                          ),
                         ),
                         Row(
                           children: [
@@ -46,15 +52,37 @@ class LoginPage extends StatelessWidget {
                                 onPressed: () {}, icon: Icon(Icons.search)),
                             IconButton(
                                 onPressed: () {
-                                  Get.to(CartPage());
+                                  if(authController.loginState == LoginState.loggedOut){
+                                    showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) => AlertDialog(
+                                        title: const Text('로그인'),
+                                        content: const Text('장바구니에 상품을 담으려면 로그인을 하셔야 합니다.'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () => Get.back(),
+                                            child: const Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Get.back();
+                                              Get.to(LoginPage());
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                  if(authController.loginState == LoginState.loggedIn) Get.to(CartPage());
                                 },
                                 icon: Icon(Icons.shopping_cart_outlined)),
                             IconButton(
                                 onPressed: () {
-                                  //var authController = Get.find<AuthController>();
+                                  // //var authController = Get.find<AuthController>();
                                   print(authController.loginState);
-                                  if(authController.loginState == LoginState.loggedOut) Get.to(LoginPage());
-                                  if(authController.loginState == LoginState.loggedIn) Get.to(MyPage());
+                                  // if(authController.loginState == LoginState.loggedOut) Get.to(LoginPage());
+                                  // if(authController.loginState == LoginState.loggedIn) Get.to(MyPage());
                                 },
                                 icon: Icon(Icons.person_outlined)),
                           ],
@@ -115,7 +143,6 @@ class LoginPage extends StatelessWidget {
                                 color: Colors.black,
                                 child: TextButton(onPressed: () {
                                   authController.login(_emailController.text, _passwordController.text);
-                                  Get.back();
                                 }, child: Text("로그인",style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),))),
                           ),
                           Padding(padding: const EdgeInsets.only(top: 15.0),
@@ -138,7 +165,6 @@ class LoginPage extends StatelessWidget {
                                     padding: const EdgeInsets.all(2.0),
                                     child: TextButton(onPressed: (){
                                       authController.register(_emailController.text, _passwordController.text);
-                                      Get.back();
                                     }, child: Text("회원가입", style: Theme.of(context).textTheme.button,)),
                                   ),
                                 ],

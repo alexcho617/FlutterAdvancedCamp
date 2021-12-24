@@ -10,6 +10,7 @@ import 'package:hemweb/getxController/cartController.dart';
 import 'package:hemweb/getxController/productController.dart';
 import 'package:hemweb/model/user.dart';
 import 'package:hemweb/model/product.dart';
+import 'package:hemweb/screens/home.dart';
 
 enum LoginState{
   loggedIn,
@@ -58,8 +59,11 @@ class AuthController extends GetxController {
       await auth.value.createUserWithEmailAndPassword(email: email, password: password);
       loginState = LoginState.loggedIn;
       setUser();
+      Get.to(HomePage());
+      Get.snackbar("sign up", 'register success');
     }catch(e){
       print("Error" + e.toString());
+      Get.snackbar('register', e.toString());
     }
   }
 
@@ -69,12 +73,14 @@ class AuthController extends GetxController {
       if(auth.value.currentUser != null){
         loginState = LoginState.loggedIn;
         fetchUser();
+        Get.to(HomePage());
         Get.snackbar("login", 'login success');
       }else{
         Get.snackbar('login', 'login fail');
       }
     }catch(e){
       print("Error" + e.toString());
+      Get.snackbar('login', 'login fail');
     }
   }
 
@@ -109,6 +115,8 @@ class AuthController extends GetxController {
         }
         setUser();
         loginState = LoginState.loggedIn;
+
+        Get.to(HomePage());
       }
     } catch (e) {
       Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
