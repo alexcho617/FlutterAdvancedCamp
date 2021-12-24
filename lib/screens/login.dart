@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hemweb/getxController/authController.dart';
+import 'package:hemweb/widgets/footer.dart';
 
 import '/screens/cart.dart';
 import '/screens/my.dart';
@@ -208,7 +209,8 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                 ),
-              )
+              ),
+              Footer()
             ],
           );
         }

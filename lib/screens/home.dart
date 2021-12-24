@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hemweb/getxController/authController.dart';
 import 'package:hemweb/getxController/cartController.dart';
@@ -149,12 +150,12 @@ class HomePage extends GetView<ProductController> {
       () => SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: gridCount,
-            mainAxisSpacing: 10.0,
-            crossAxisSpacing: 10.0,
+            mainAxisSpacing: 10.0.h,
+            crossAxisSpacing: 10.0.w,
             childAspectRatio: 0.75),
         delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
           return Container(
-            margin: EdgeInsets.symmetric(horizontal: 8.0),
+            margin: EdgeInsets.symmetric(horizontal: 8.0.w),
             width: gridCount == 2
                 ? constraints.maxWidth * 0.5
                 : constraints.maxWidth * 0.2,

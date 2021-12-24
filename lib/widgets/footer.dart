@@ -23,15 +23,16 @@ class Footer extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text('Hiver Clone Coding Using GetX'),
-            Text('alexcho617'),
-            Text('growbook91'),
-            Text('glowisn'),
+            
             Row(children: [
               Text('Made With'),
               Text(
                 '♥',
                 style: TextStyle(color: Colors.red, fontSize: 12),
-              )
+              ),
+              Text('By '),Text('alexcho617, '),
+            Text('growbook91, '),
+            Text('glowisn'),
             ])
           ],
         ),
