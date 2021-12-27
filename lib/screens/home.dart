@@ -219,23 +219,6 @@ class HomePage extends GetView<ProductController> {
                               [controller.productList[index].id])
                         }).then((value) => print("Cart added in DB"));
                       } else {
-                        // Get.defaultDialog(
-                        //     onConfirm: () {
-                        //       Get.to(LoginPage());
-                        //     },
-                        //     middleText: "장바구니에 상품을 담으려면 로그인을 하셔야 합니다."
-                        //   AlertDialog(
-                        //     title: Text('로그인'),
-                        //     content: Text('장바구니에 상품을 담으려면 로그인을 하셔야 합니다.'),
-                        //     actions: [
-                        //       TextButton(onPressed: (){
-                        //         Get.to(LoginPage());
-                        //       }, child: Text('ok')),
-                        //       TextButton(onPressed: (){
-                        //         Get.back();
-                        //       }, child: Text('cancel'))
-                        //     ],
-                        //   );
                         showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
