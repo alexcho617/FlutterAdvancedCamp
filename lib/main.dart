@@ -3,13 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:hemweb/getxController/authController.dart';
-import 'package:hemweb/getxController/cartController.dart';
+
+import 'configure_nonweb.dart' if (dart.library.html) 'configure_web.dart';
 import 'package:hemweb/getxController/productController.dart';
 import 'package:hemweb/screens/home.dart';
-import 'package:hemweb/screens/login.dart';
 
 void main() async {
+  configureApp();
   WidgetsFlutterBinding.ensureInitialized();
 
   if (kIsWeb == true) {
@@ -36,16 +36,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      builder:() => GetMaterialApp(
+      builder: () => GetMaterialApp(
         title: 'Flutter Advacned Camp HEM',
-        initialBinding: BindingsBuilder((){
+        initialBinding: BindingsBuilder(() {
           Get.put(ProductController());
         }),
         home: HomePage(),
         // home: ResponsivePage()
       ),
-    designSize: const Size(414, 896),
-    
+      designSize: const Size(414, 896),
+
       // BoxConstraints(
       //       maxWidth: MediaQuery.of(context).size.width,
       //       maxHeight: MediaQuery.of(context).size.height),
