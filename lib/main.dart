@@ -3,6 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hemweb/screens/cart.dart';
+import 'package:hemweb/screens/login.dart';
+import 'package:hemweb/screens/my.dart';
 
 import 'configure_nonweb.dart' if (dart.library.html) 'configure_web.dart';
 import 'package:hemweb/getxController/productController.dart';
@@ -41,8 +44,15 @@ class MyApp extends StatelessWidget {
         initialBinding: BindingsBuilder(() {
           Get.put(ProductController());
         }),
-        home: HomePage(),
+        //home: HomePage(),
         // home: ResponsivePage()
+        initialRoute: '/Home',
+        getPages: [
+          GetPage(name: '/Home', page: () => HomePage()),
+          GetPage(name: '/Login', page: () => LoginPage()),
+          GetPage(name: '/Profile', page: () => MyPage()),
+          GetPage(name: '/Cart', page: () => CartPage())
+        ],
       ),
       designSize: const Size(414, 896),
 
