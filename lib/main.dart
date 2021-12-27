@@ -36,16 +36,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      builder:() => GetMaterialApp(
+      builder: () => GetMaterialApp(
         title: 'Flutter Advacned Camp HEM',
-        initialBinding: BindingsBuilder((){
-          Get.put(ProductController());
+        initialBinding: BindingsBuilder(() {
+          Get.put(
+            ProductController(),
+          );
         }),
         home: HomePage(),
         // home: ResponsivePage()
       ),
-    designSize: const Size(414, 896),
-    
+      designSize: const Size(414, 896),
+
       // BoxConstraints(
       //       maxWidth: MediaQuery.of(context).size.width,
       //       maxHeight: MediaQuery.of(context).size.height),
