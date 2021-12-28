@@ -53,7 +53,7 @@ class RootView extends GetView<RootController> {
                 ),
               ),
             ),
-            GetRouterOutlet(initialRoute: Routes.TEST01),
+            //GetRouterOutlet(initialRoute: Routes.TEST01),
             SliverToBoxAdapter(
               child: SizedBox(
                 width: constraints.maxWidth,
