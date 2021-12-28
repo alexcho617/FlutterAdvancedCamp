@@ -126,6 +126,8 @@ class CartPage extends StatelessWidget {
                                         // cartController.checkList.remove(item);
                                         print(item);
                                       }
+
+                                      cartController.checkList.clear();
                                     },
                                     child: Text(
                                       '선택삭제',

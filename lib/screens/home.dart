@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_print
+// ignore_for_file: prefer_const_constructors, avoid_print, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +27,10 @@ final List<String> imgList = [
 class HomePage extends GetView<ProductController> {
   final authController = Get.put(AuthController());
   final cartController = Get.put(CartController());
+  
+  
   bool? isNarrow;
+  HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
