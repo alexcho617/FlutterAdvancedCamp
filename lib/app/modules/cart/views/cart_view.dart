@@ -8,10 +8,6 @@ class CartView extends GetView<CartController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('CartView'),
-        centerTitle: true,
-      ),
       body: Center(
         child: Text(
           'CartView is working',
