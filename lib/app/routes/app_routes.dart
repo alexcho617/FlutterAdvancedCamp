@@ -5,8 +5,8 @@ abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
   static const PRODUCTS = _Paths.HOME + _Paths.PRODUCTS;
-  static const CART = _Paths.HOME + _Paths.CART;
-  static const LOGIN = _Paths.HOME + _Paths.LOGIN;
+  static const CART = _Paths.CART;
+  static const LOGIN = _Paths.LOGIN;
   static const PROFILE = _Paths.HOME + _Paths.PROFILE;
   static const TEST01 = _Paths.TEST01;
 }

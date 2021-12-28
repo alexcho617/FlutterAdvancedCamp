@@ -23,7 +23,7 @@ class ProductsView extends GetView<ProductsController> {
         children: [
           CarouselSlider(
             options: CarouselOptions(
-              height: 359,
+              height: 400,
               autoPlay: true,
             ),
             items: imgList
@@ -31,7 +31,7 @@ class ProductsView extends GetView<ProductsController> {
                       color: Colors.blue,
                       child: Image.network(
                         item,
-                        fit: BoxFit.fitWidth,
+                        fit: BoxFit.cover,
                       ),
                     ))
                 .toList(),
@@ -39,7 +39,7 @@ class ProductsView extends GetView<ProductsController> {
           SizedBox(
             height: 60,
           ),
-          Text("Gridview Here"),
+          Text("TODO: Implement gridview here")
         ],
       )),
     );

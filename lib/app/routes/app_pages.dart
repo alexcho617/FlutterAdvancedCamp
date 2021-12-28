@@ -27,6 +27,8 @@ class AppPages {
         name: '/',
         page: () => RootView(),
         binding: RootBinding(),
+        participatesInRootNavigator: true,
+        preventDuplicates: true,
         children: [
           GetPage(
               name: _Paths.HOME,
@@ -39,21 +41,21 @@ class AppPages {
                   binding: ProductsBinding(),
                 ),
                 GetPage(
-                  name: _Paths.CART,
-                  page: () => CartView(),
-                  binding: CartBinding(),
-                ),
-                GetPage(
-                  name: _Paths.LOGIN,
-                  page: () => LoginView(),
-                  binding: LoginBinding(),
-                ),
-                GetPage(
                   name: _Paths.PROFILE,
                   page: () => ProfileView(),
                   binding: ProfileBinding(),
                 ),
               ]),
+          GetPage(
+            name: _Paths.CART,
+            page: () => CartView(),
+            binding: CartBinding(),
+          ),
+          GetPage(
+            name: _Paths.LOGIN,
+            page: () => LoginView(),
+            binding: LoginBinding(),
+          ),
         ]),
     GetPage(
       name: _Paths.TEST01,
