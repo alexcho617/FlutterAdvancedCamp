@@ -24,8 +24,6 @@ class AuthController extends GetxController {
 
   LoginState loginState = LoginState.loggedOut;
 
-  late Rx<User?> firebaseUser;
-
   @override
   void onInit(){
     super.onInit();
@@ -41,17 +39,6 @@ class AuthController extends GetxController {
     super.onReady();
     googleSignInAccount = Rx<GoogleSignInAccount?>(googleSignIn.currentUser);
     googleSignInAccount.bindStream(googleSignIn.onCurrentUserChanged);
-
-    firebaseUser = Rx<User?>(auth.value.currentUser);
-    firebaseUser.bindStream(auth.value.userChanges());
-
-    // ever(googleSignInAccount, (_) {
-    //   print("Google Sign In Changed!:\n");
-    //   print(googleSignInAccount);
-    //   print("\n\n");
-    //   print("This is the value: \n");
-    //   print(googleSignInAccount.value);
-    // });
   }
 
   void register(String email, password) async {
@@ -93,9 +80,7 @@ class AuthController extends GetxController {
   void signInWithGoogle() async {
     try {
       GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-      //Get.snackbar("One", "signInDone", snackPosition: SnackPosition.TOP);
 
-      //When google login success
       if (googleSignInAccount != null) {
         GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
@@ -103,10 +88,7 @@ class AuthController extends GetxController {
         AuthCredential authCredential = GoogleAuthProvider.credential(
             accessToken: googleSignInAuthentication.accessToken,
             idToken: googleSignInAuthentication.idToken);
-
         await auth.value.signInWithCredential(authCredential);
-        //Get.snackbar("Two", "signInCredentialDone", snackPosition: SnackPosition.BOTTOM);
-
         QuerySnapshot userQuerySnapshot = await firestore.collection('user').get();
         for (var element in userQuerySnapshot.docs) {
           if(element.id == auth.value.currentUser!.uid){
@@ -115,7 +97,6 @@ class AuthController extends GetxController {
         }
         setUser();
         loginState = LoginState.loggedIn;
-
         Get.to(HomePage());
       }
     } catch (e) {

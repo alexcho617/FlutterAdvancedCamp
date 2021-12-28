@@ -55,8 +55,8 @@ class HomePage extends GetView<ProductController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       InkWell(
-                        onTap: (){
-                          Get.to(HomePage());
+                        onTap: () {
+                          Get.toNamed("/Home");
                         },
                         child: Image.asset(
                           'assets/logoImage.png',
@@ -69,12 +69,15 @@ class HomePage extends GetView<ProductController> {
                               onPressed: () {}, icon: Icon(Icons.search)),
                           IconButton(
                               onPressed: () {
-                                if(authController.loginState == LoginState.loggedOut){
+                                if (authController.loginState ==
+                                    LoginState.loggedOut) {
                                   showDialog<String>(
                                     context: context,
-                                    builder: (BuildContext context) => AlertDialog(
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
                                       title: const Text('로그인'),
-                                      content: const Text('장바구니에 상품을 담으려면 로그인을 하셔야 합니다.'),
+                                      content: const Text(
+                                          '장바구니에 상품을 담으려면 로그인을 하셔야 합니다.'),
                                       actions: <Widget>[
                                         TextButton(
                                           onPressed: () => Get.back(),
@@ -83,7 +86,7 @@ class HomePage extends GetView<ProductController> {
                                         TextButton(
                                           onPressed: () {
                                             Get.back();
-                                            Get.to(LoginPage());
+                                            Get.toNamed("/Login");
                                           },
                                           child: const Text('OK'),
                                         ),
@@ -91,7 +94,8 @@ class HomePage extends GetView<ProductController> {
                                     ),
                                   );
                                 }
-                                if(authController.loginState == LoginState.loggedIn) Get.to(CartPage());
+                                if (authController.loginState ==
+                                    LoginState.loggedIn) Get.to(CartPage());
                               },
                               icon: Icon(Icons.shopping_cart_outlined)),
                           IconButton(
@@ -99,9 +103,10 @@ class HomePage extends GetView<ProductController> {
                                 //var authController = Get.find<AuthController>();
                                 print(authController.loginState);
                                 if (authController.loginState ==
-                                    LoginState.loggedOut) Get.to(LoginPage());
+                                    LoginState.loggedOut) Get.toNamed("/Login");
                                 if (authController.loginState ==
-                                    LoginState.loggedIn) Get.to(MyPage());
+                                    LoginState.loggedIn)
+                                  Get.toNamed("/Profile");
                               },
                               icon: Icon(Icons.person_outlined)),
                         ],
@@ -116,7 +121,9 @@ class HomePage extends GetView<ProductController> {
             SliverToBoxAdapter(
               child: CarouselSlider(
                 options: CarouselOptions(
-                  height: constraints.maxWidth < 1000 ? constraints.maxWidth* 0.4 : 400,
+                  height: constraints.maxWidth < 1000
+                      ? constraints.maxWidth * 0.4
+                      : 400,
                   autoPlay: true,
                 ),
                 items: imgList
@@ -131,7 +138,9 @@ class HomePage extends GetView<ProductController> {
               ),
             ),
             SliverToBoxAdapter(
-              child: SizedBox(height: 100,),
+              child: SizedBox(
+                height: 100,
+              ),
             ),
             //items
             constraints.maxWidth > 1000
@@ -222,23 +231,6 @@ class HomePage extends GetView<ProductController> {
                               [controller.productList[index].id])
                         }).then((value) => print("Cart added in DB"));
                       } else {
-                        // Get.defaultDialog(
-                        //     onConfirm: () {
-                        //       Get.to(LoginPage());
-                        //     },
-                        //     middleText: "장바구니에 상품을 담으려면 로그인을 하셔야 합니다."
-                        //   AlertDialog(
-                        //     title: Text('로그인'),
-                        //     content: Text('장바구니에 상품을 담으려면 로그인을 하셔야 합니다.'),
-                        //     actions: [
-                        //       TextButton(onPressed: (){
-                        //         Get.to(LoginPage());
-                        //       }, child: Text('ok')),
-                        //       TextButton(onPressed: (){
-                        //         Get.back();
-                        //       }, child: Text('cancel'))
-                        //     ],
-                        //   );
                         showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
@@ -252,7 +244,7 @@ class HomePage extends GetView<ProductController> {
                               TextButton(
                                 onPressed: () {
                                   Get.back();
-                                  Get.to(LoginPage());
+                                  Get.toNamed('/Login');
                                 },
                                 child: const Text('OK'),
                               ),
@@ -271,4 +263,3 @@ class HomePage extends GetView<ProductController> {
     );
   }
 }
-
