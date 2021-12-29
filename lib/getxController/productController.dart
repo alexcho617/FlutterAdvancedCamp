@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:get/get.dart';
-import 'package:hemweb/model/product.dart';
+import '../models/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductController extends GetxController {

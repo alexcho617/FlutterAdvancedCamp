@@ -2,7 +2,7 @@
 
 import 'package:get/get.dart';
 import 'package:hemweb/getxController/authController.dart';
-import 'package:hemweb/model/product.dart';
+import '../models/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 //define the getx controllers here

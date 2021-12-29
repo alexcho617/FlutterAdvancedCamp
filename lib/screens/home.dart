@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:hemweb/getxController/authController.dart';
 import 'package:hemweb/getxController/cartController.dart';
 import 'package:hemweb/getxController/productController.dart';
-import 'package:hemweb/model/product.dart';
+import '../models/product.dart';
 import 'package:hemweb/screens/cart.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
