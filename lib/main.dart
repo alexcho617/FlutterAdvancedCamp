@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
+import 'services/auth_service.dart';
 import 'app/routes/app_pages.dart';
 import 'configure_nonweb.dart' if (dart.library.html) 'configure_web.dart';
 
@@ -28,7 +30,7 @@ void main() async {
   runApp(GetMaterialApp.router(
     title: "Flutter Advance Camp HEM",
     initialBinding: BindingsBuilder(() {
-      //Get.put(dependency);
+      Get.put(AuthService());
     }),
     getPages: AppPages.routes,
   ));

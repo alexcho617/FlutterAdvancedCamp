@@ -9,6 +9,9 @@ abstract class Routes {
   static const LOGIN = _Paths.LOGIN;
   static const PROFILE = _Paths.HOME + _Paths.PROFILE;
   static const TEST01 = _Paths.TEST01;
+  
+  static String LOGIN_THEN(String afterSuccessfulLogin) =>
+      '$LOGIN?then=${Uri.encodeQueryComponent(afterSuccessfulLogin)}';
 }
 
 abstract class _Paths {

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hemweb/app/middleware/auth_middleware.dart';
 
 import '../modules/cart/bindings/cart_binding.dart';
 import '../modules/cart/views/cart_view.dart';
@@ -41,6 +42,9 @@ class AppPages {
                   binding: ProductsBinding(),
                 ),
                 GetPage(
+                  middlewares: [
+                    EnsureAuthMiddleware(),
+                  ],
                   name: _Paths.PROFILE,
                   page: () => ProfileView(),
                   binding: ProfileBinding(),
@@ -52,6 +56,9 @@ class AppPages {
             binding: CartBinding(),
           ),
           GetPage(
+            middlewares: [
+              EnsureNotAuthedMiddleware(),
+            ],
             name: _Paths.LOGIN,
             page: () => LoginView(),
             binding: LoginBinding(),

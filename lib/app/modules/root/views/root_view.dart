@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hemweb/app/modules/home/views/home_view.dart';
 import 'package:hemweb/app/routes/app_pages.dart';
+import 'package:hemweb/services/auth_service.dart';
 
 import '../controllers/root_controller.dart';
 
@@ -46,7 +47,13 @@ class RootView extends GetView<RootController> {
                               icon: Icon(Icons.shopping_cart_outlined)),
                           IconButton(
                               onPressed: () {
-                                delegate.toNamed(Routes.LOGIN);
+                                print(AuthService.to.isLoggedInValue);
+                                if (AuthService().isLoggedInValue == true) {
+                                  delegate.toNamed(Routes.PROFILE);
+                                } else if (AuthService().isLoggedInValue !=
+                                    true) {
+                                  delegate.toNamed(Routes.LOGIN);
+                                }
                               },
                               icon: Icon(Icons.person_outlined)),
                         ],
