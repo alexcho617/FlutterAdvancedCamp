@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:hemweb/app/routes/app_pages.dart';
 
+import '../../../../services/auth_service.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -61,6 +63,8 @@ class LoginView extends GetView<LoginController> {
                     child: TextButton(
                         onPressed: () {
                           //Implement Email Login here
+                          AuthService.to.login(
+                              _emailController.text, _passwordController.text);
                         },
                         child: Text(
                           "로그인",

@@ -8,8 +8,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hemweb/getxController/cartController.dart';
 import 'package:hemweb/getxController/productController.dart';
-import 'package:hemweb/model/user.dart';
-import 'package:hemweb/model/product.dart';
+import 'package:hemweb/models/user.dart';
+import 'package:hemweb/models/product.dart';
 import 'package:hemweb/screens/home.dart';
 
 enum LoginState{
