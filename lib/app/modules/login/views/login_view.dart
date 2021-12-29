@@ -63,10 +63,8 @@ class LoginView extends GetView<LoginController> {
                     child: TextButton(
                         onPressed: () {
                           //Implement Email Login here
-                          AuthService.to.login();
-                          if (AuthService.to.isLoggedInValue == true) {
-                            Get.rootDelegate.toNamed(Routes.HOME);
-                          }
+                          AuthService.to.login(
+                              _emailController.text, _passwordController.text);
                         },
                         child: Text(
                           "로그인",
