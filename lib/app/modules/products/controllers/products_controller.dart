@@ -1,20 +1,24 @@
+// ignore_for_file: file_names
+
 import 'package:get/get.dart';
 
-class ProductsController extends GetxController {
-  //TODO: Implement ProductsController
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hemweb/models/product.dart';
 
-  final count = 0.obs;
+class ProductsController extends GetxController {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  var productList = <Product>[].obs;
+
   @override
   void onInit() {
     super.onInit();
+    fetchProducts();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  Future<void> fetchProducts() async {
+    QuerySnapshot x = await firestore.collection('product').get();
+    for (var element in x.docs) {
+      productList.add(Product.fromSnapShot(element));
+    }
   }
-
-  @override
-  void onClose() {}
-  void increment() => count.value++;
 }

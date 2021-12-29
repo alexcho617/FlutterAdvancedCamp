@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RootController extends GetxController {
   //TODO: Implement RootController
 
-  final count = 0.obs;
+  late Rx<BoxConstraints> constraints;
   @override
   void onInit() {
     super.onInit();
@@ -16,5 +17,5 @@ class RootController extends GetxController {
 
   @override
   void onClose() {}
-  void increment() => count.value++;
+  // void increment() => count.value++;
 }
