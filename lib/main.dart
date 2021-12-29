@@ -2,6 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hemweb/app/modules/cart/controllers/cart_controller.dart';
+import 'package:hemweb/app/modules/products/controllers/products_controller.dart';
+
 
 
 import 'services/auth_service.dart';
@@ -31,6 +34,9 @@ void main() async {
     title: "Flutter Advance Camp HEM",
     initialBinding: BindingsBuilder(() {
       Get.put(AuthService());
+      Get.put(ProductsController());
+      Get.put(CartController());
+
     }),
     getPages: AppPages.routes,
   ));
