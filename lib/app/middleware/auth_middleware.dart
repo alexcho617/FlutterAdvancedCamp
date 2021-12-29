@@ -9,7 +9,6 @@ class EnsureAuthMiddleware extends GetMiddleware {
     // you can do whatever you want here
     // but it's preferable to make this method fast
     // await Future.delayed(Duration(milliseconds: 500));
-    print("line 12");
 
     if (!AuthService.to.isLoggedInValue) {
       final newRoute = Routes.LOGIN_THEN(route.location!);
