@@ -1,16 +1,18 @@
 // ignore_for_file: file_names
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hemweb/app/modules/home/views/home_view.dart';
 import 'package:hemweb/getxController/cartController.dart';
 import 'package:hemweb/getxController/productController.dart';
 import 'package:hemweb/models/user.dart';
 import 'package:hemweb/models/product.dart';
-import 'package:hemweb/screens/home.dart';
+
 
 enum LoginState{
   loggedIn,
@@ -46,7 +48,7 @@ class AuthController extends GetxController {
       await auth.value.createUserWithEmailAndPassword(email: email, password: password);
       loginState = LoginState.loggedIn;
       setUser();
-      Get.to(HomePage());
+      Get.to(HomeView());
       Get.snackbar("sign up", 'register success');
     }catch(e){
       print("Error" + e.toString());
@@ -58,9 +60,11 @@ class AuthController extends GetxController {
     try{
       await auth.value.signInWithEmailAndPassword(email: email, password: password);
       if(auth.value.currentUser != null){
+        await FirebaseAnalytics.instance.logLogin();
+        await FirebaseAnalytics.instance.setUserProperty(name: 'age', value: '21');
         loginState = LoginState.loggedIn;
         fetchUser();
-        Get.to(HomePage());
+        Get.to(HomeView());
         Get.snackbar("login", 'login success');
       }else{
         Get.snackbar('login', 'login fail');
@@ -97,7 +101,7 @@ class AuthController extends GetxController {
         }
         setUser();
         loginState = LoginState.loggedIn;
-        Get.to(HomePage());
+        Get.to(HomeView());
       }
     } catch (e) {
       Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);

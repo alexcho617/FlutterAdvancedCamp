@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ import 'configure_nonweb.dart' if (dart.library.html) 'configure_web.dart';
 void main() async {
   configureApp();
   WidgetsFlutterBinding.ensureInitialized();
-
+  
   if (kIsWeb == true) {
     await Firebase.initializeApp(
       //webonly
@@ -24,6 +25,7 @@ void main() async {
         messagingSenderId: "114809887796", // Your messagingSenderId
         projectId: "hemweb", // Your projectId
         storageBucket: 'gs://hemweb.appspot.com/',
+        // measurementId: "G-W2LZ1X52Z3"//to use GA
       ),
     );
   } else {
@@ -39,5 +41,6 @@ void main() async {
 
     }),
     getPages: AppPages.routes,
+    navigatorObservers: <NavigatorObserver> [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
   ));
 }
