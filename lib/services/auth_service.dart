@@ -49,11 +49,6 @@ class AuthService extends GetxService {
       if (auth.value.currentUser != null) {
         await analytics.logLogin();
         await analytics.setUserId(id: auth.value.currentUser!.uid);
-        await analytics.logEvent(name: 'view_product', parameters: {
-          'uid': auth.value.currentUser!.uid,
-          'name': '이강민',
-          'age': 21,
-        });
         // await analytics.setUserProperty(name: 'ag', value: '21');
         isLoggedIn.value = true;
         fetchUser();
