@@ -16,7 +16,7 @@ class ProductsController extends GetxController {
   }
 
   Future<void> fetchProducts() async {
-    QuerySnapshot x = await firestore.collection('product').get();
+    QuerySnapshot x = await firestore.collection('Hiver/product/Products').get();
     for (var element in x.docs) {
       productList.add(Product.fromSnapShot(element));
     }

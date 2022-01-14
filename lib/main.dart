@@ -20,11 +20,11 @@ void main() async {
     await Firebase.initializeApp(
       //webonly
       options: FirebaseOptions(
-        apiKey: "AIzaSyAWXKccNzcX1tSPcXYkKRXeonD2JsG1AFE", // Your apiKey
-        appId: "1:114809887796:web:bf7b5f140ffe5e7e717e61", // Your appId
-        messagingSenderId: "114809887796", // Your messagingSenderId
-        projectId: "hemweb", // Your projectId
-        storageBucket: 'gs://hemweb.appspot.com/',
+        apiKey: "AIzaSyD3HEMEloUw73V1mvxtI71Ezyngj1s52vc", // Your apiKey
+        appId: "1:275417015156:web:ddce8248173096a70dc221", // Your appId
+        messagingSenderId: "275417015156", // Your messagingSenderId
+        projectId: "boilerplate-8f1db", // Your projectId
+        storageBucket: "boilerplate-8f1db.appspot.com",
         // measurementId: "G-W2LZ1X52Z3"//to use GA
       ),
     );

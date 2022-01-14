@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "hemweb"
-  }
+    "default": "hemweb",
+    "main": "boilerplate-8f1db"
+  },
+  "targets": {}
 }

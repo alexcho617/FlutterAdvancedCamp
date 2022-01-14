@@ -17,7 +17,7 @@ class AuthService extends GetxService {
   Rx<CustomUser> myuser = CustomUser().obs;
   Rx<FirebaseAuth> auth = FirebaseAuth.instance.obs;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference user = FirebaseFirestore.instance.collection('user');
+  CollectionReference user = FirebaseFirestore.instance.collection('Hiver/user/Users');
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   /// Mocks a login process
@@ -48,8 +48,9 @@ class AuthService extends GetxService {
           .signInWithEmailAndPassword(email: email, password: password);
       if (auth.value.currentUser != null) {
         await analytics.logLogin();
-        await analytics.setUserId(id: auth.value.currentUser!.uid);
-        // await analytics.setUserProperty(name: 'ag', value: '21');
+        //await analytics.setUserId(id: auth.value.currentUser!.uid);
+        await analytics.logScreenView();
+        await analytics.setUserProperty(name: 'name', value: '5');
         isLoggedIn.value = true;
         fetchUser();
         //Get.rootDelegate.toNamed(Routes.HOME);
@@ -107,7 +108,7 @@ class AuthService extends GetxService {
 
     //fetch user info from db
     DocumentSnapshot userSnapshot = await firestore
-        .collection('user')
+        .collection('Hiver/user/Users')
         .doc(auth.value.currentUser!.uid)
         .get();
     myuser.value.email = auth.value.currentUser!.email;

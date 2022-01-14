@@ -96,6 +96,8 @@ class LoginView extends GetView<LoginController> {
                             onPressed: () {},
                             onLongPress: () {
                               //Implement Admin Login here
+                              AuthService.to.login(
+                              'admin@admin.com', '123456');
                             },
                             child: Text(
                               "비밀번호 찾기",
@@ -110,8 +112,7 @@ class LoginView extends GetView<LoginController> {
                               //Implement Register with Email here
                               //이건 되네..
                               // await FirebaseAnalytics.instance.setUserProperty(name: 'age', value: '21');
-                              AuthService.to.login(
-                              'admin@admin.com', '123456');
+                              AuthService.to.register(_emailController.text, _passwordController.text);
                             },
                             child: Text(
                               "회원가입",

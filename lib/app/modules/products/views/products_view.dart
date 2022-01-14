@@ -140,7 +140,7 @@ class ProductsView extends GetView<ProductsController> {
                             controller.productList[index], 1);
                         DocumentReference userReference = FirebaseFirestore
                             .instance
-                            .collection('user')
+                            .collection('Hiver/user/Users')
                             .doc(AuthService.to.auth.value.currentUser!.uid);
                         await userReference.update({
                           'cart': FieldValue.arrayUnion(
