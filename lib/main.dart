@@ -41,6 +41,6 @@ void main() async {
 
     }),
     getPages: AppPages.routes,
-    navigatorObservers: <NavigatorObserver> [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
+    // navigatorObservers: <NavigatorObserver> [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
   ));
 }

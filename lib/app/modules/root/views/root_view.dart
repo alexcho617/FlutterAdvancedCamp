@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -40,7 +42,17 @@ class RootView extends GetView<RootController> {
                       Row(
                         children: [
                           IconButton(
-                              onPressed: () {}, icon: Icon(Icons.search)),
+                              onPressed: () async {
+                                for(int i = 0 ; i < 100 ; i++){
+                                  await AuthService.to.analytics
+                                    .logEvent(name: 'sample_data', parameters: {
+                                  'gender':
+                                      Random().nextBool() ? 'male' : 'female',
+                                  'age': Random().nextInt(30) + 10,
+                                });
+                                }
+                              },
+                              icon: Icon(Icons.search)),
                           IconButton(
                               onPressed: () {
                                 print("delegate to CART");
@@ -49,7 +61,8 @@ class RootView extends GetView<RootController> {
                               icon: Icon(Icons.shopping_cart_outlined)),
                           IconButton(
                               onPressed: () {
-                                print('root_view: line 52 ${AuthService.to.isLoggedInValue}');
+                                print(
+                                    'root_view: line 52 ${AuthService.to.isLoggedInValue}');
                                 if (AuthService().isLoggedInValue == true) {
                                   delegate.toNamed(Routes.PROFILE);
                                 } else if (AuthService().isLoggedInValue !=
