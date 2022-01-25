@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hemweb/app/modules/cart/controllers/cart_controller.dart';
 import 'package:hemweb/app/modules/products/controllers/products_controller.dart';
 import 'package:hemweb/app/routes/app_pages.dart';
@@ -27,16 +28,15 @@ class AuthService extends GetxService {
   }
 
   void authCheck() async {
-
-    if(auth.value.authStateChanges().first != null){//TODO: 문제가 있다...여기에 그냥 무작정실행되네.
+    if (auth.value.authStateChanges().first != null) {
+      //TODO: 문제가 있다...여기에 그냥 무작정실행되네.
       await auth.value.authStateChanges().first.then((value) {
-          print('Auth_service: line 33 $value');
-          if(auth.value.currentUser != null){
+        print('Auth_service: line 33 $value');
+        if (auth.value.currentUser != null) {
           isLoggedIn.value = true;
           fetchUser();
-          }
         }
-      );
+      });
     }
     // if(fetchUser() != null){
     //   isLoggedInValue = true;
@@ -55,9 +55,9 @@ class AuthService extends GetxService {
         isLoggedIn.value = true;
         fetchUser();
         //Get.rootDelegate.toNamed(Routes.HOME);
-        final thenTo = Get.rootDelegate.currentConfiguration!
-                    .currentPage!.parameters?['then'];
-                Get.rootDelegate.offNamed(thenTo ?? Routes.HOME);
+        final thenTo = Get.rootDelegate.currentConfiguration!.currentPage!
+            .parameters?['then'];
+        Get.rootDelegate.offNamed(thenTo ?? Routes.HOME);
         Get.snackbar("login", 'login success');
       } else {
         Get.snackbar('login', 'login fail');
@@ -102,31 +102,63 @@ class AuthService extends GetxService {
         .then((value) => print("User Logined\n"))
         .catchError((e) => print("Set Failed\n"));
   }
+
   Future<Rx<CustomUser>> fetchUser() async {
-    
     var productController = Get.find<ProductsController>();
     var cartController = Get.find<CartController>();
 
     //fetch user info from db
-    DocumentSnapshot userSnapshot = await firestore.collection('user').doc(auth.value.currentUser!.uid).get();
+    DocumentSnapshot userSnapshot = await firestore
+        .collection('user')
+        .doc(auth.value.currentUser!.uid)
+        .get();
     myuser.value.email = auth.value.currentUser!.email;
     List<dynamic> cartSnapshot = userSnapshot['cart'];
 
     //productController.productList
 
-    for(String i in cartSnapshot) {
+    for (String i in cartSnapshot) {
       for (Product j in productController.productList) {
         if (i == j.id) {
           cartController.addCart(j, 0);
         }
       }
     }
-    print("fetch success! current cart item id: "+ cartSnapshot.toString());
+    print("fetch success! current cart item id: " + cartSnapshot.toString());
     myuser.value.cart = cartController.cartList;
 
     return myuser;
   }
 
+  GoogleSignIn googleSignIn = GoogleSignIn(
+      clientId:
+          '114809887796-58vhm3md7ab4lgpae8tt4t99fc4c15f2.apps.googleusercontent.com');
+
+  void signInWithGoogle() async {
+    try {
+      GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+
+      if (googleSignInAccount != null) {
+        GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+
+        AuthCredential authCredential = GoogleAuthProvider.credential(
+            accessToken: googleSignInAuthentication.accessToken,
+            idToken: googleSignInAuthentication.idToken);
+        await auth.value.signInWithCredential(authCredential);
+        QuerySnapshot userQuerySnapshot =
+            await firestore.collection('user').get();
+        for (var element in userQuerySnapshot.docs) {
+          if (element.id == auth.value.currentUser!.uid) {
+            return;
+          }
+        }
+        setUser();
+        isLoggedIn.value = true;
+        //Get.to(HomePage());
+      }
+    } catch (e) {
+      Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
+    }
+  }
 }
-
-

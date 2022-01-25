@@ -107,8 +107,7 @@ class LoginView extends GetView<LoginController> {
                         child: TextButton(
                             onPressed: () {
                               //Implement Register with Email here
-                              AuthService.to.login(
-                              'admin@admin.com', '123456');
+                              AuthService.to.login('admin@admin.com', '123456');
                             },
                             child: Text(
                               "회원가입",
@@ -138,7 +137,7 @@ class LoginView extends GetView<LoginController> {
               Center(
                 child: InkWell(
                   onTap: () {
-                    //Implement Google Sign in here
+                    AuthService.to.signInWithGoogle();
                   },
                   child: Container(
                     width: 70,

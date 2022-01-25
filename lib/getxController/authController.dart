@@ -12,10 +12,7 @@ import 'package:hemweb/models/user.dart';
 import 'package:hemweb/models/product.dart';
 import 'package:hemweb/screens/home.dart';
 
-enum LoginState{
-  loggedIn,
-  loggedOut
-}
+enum LoginState { loggedIn, loggedOut }
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
@@ -25,13 +22,14 @@ class AuthController extends GetxController {
   LoginState loginState = LoginState.loggedOut;
 
   @override
-  void onInit(){
+  void onInit() {
     super.onInit();
-
   }
 
   Rx<FirebaseAuth> auth = FirebaseAuth.instance.obs;
-  GoogleSignIn googleSignIn = GoogleSignIn();
+  GoogleSignIn googleSignIn = GoogleSignIn(
+      clientId:
+          '114809887796-58vhm3md7ab4lgpae8tt4t99fc4c15f2.apps.googleusercontent.com');
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
@@ -42,30 +40,32 @@ class AuthController extends GetxController {
   }
 
   void register(String email, password) async {
-    try{
-      await auth.value.createUserWithEmailAndPassword(email: email, password: password);
+    try {
+      await auth.value
+          .createUserWithEmailAndPassword(email: email, password: password);
       loginState = LoginState.loggedIn;
       setUser();
       Get.to(HomePage());
       Get.snackbar("sign up", 'register success');
-    }catch(e){
+    } catch (e) {
       print("Error" + e.toString());
       Get.snackbar('register', e.toString());
     }
   }
 
-  void login(String email, password) async{
-    try{
-      await auth.value.signInWithEmailAndPassword(email: email, password: password);
-      if(auth.value.currentUser != null){
+  void login(String email, password) async {
+    try {
+      await auth.value
+          .signInWithEmailAndPassword(email: email, password: password);
+      if (auth.value.currentUser != null) {
         loginState = LoginState.loggedIn;
         fetchUser();
         Get.to(HomePage());
         Get.snackbar("login", 'login success');
-      }else{
+      } else {
         Get.snackbar('login', 'login fail');
       }
-    }catch(e){
+    } catch (e) {
       print("Error" + e.toString());
       Get.snackbar('login', 'login fail');
     }
@@ -83,15 +83,16 @@ class AuthController extends GetxController {
 
       if (googleSignInAccount != null) {
         GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+            await googleSignInAccount.authentication;
 
         AuthCredential authCredential = GoogleAuthProvider.credential(
             accessToken: googleSignInAuthentication.accessToken,
             idToken: googleSignInAuthentication.idToken);
         await auth.value.signInWithCredential(authCredential);
-        QuerySnapshot userQuerySnapshot = await firestore.collection('user').get();
+        QuerySnapshot userQuerySnapshot =
+            await firestore.collection('user').get();
         for (var element in userQuerySnapshot.docs) {
-          if(element.id == auth.value.currentUser!.uid){
+          if (element.id == auth.value.currentUser!.uid) {
             return;
           }
         }
@@ -104,19 +105,18 @@ class AuthController extends GetxController {
     }
   }
 
-
   CollectionReference user = FirebaseFirestore.instance.collection('user');
-  Future<void> setUser(){
+  Future<void> setUser() {
     //auth to state
     myuser.value.email = auth.value.currentUser!.email;
     myuser.value.cart = [];
 
-
     //state to db
-    return user.doc(auth.value.currentUser!.uid).set({
-      'email' : myuser.value.email,
-      'cart' : myuser.value.cart
-    }).then((value) => print("User Logined\n")).catchError((e) =>print("Set Failed\n"));
+    return user
+        .doc(auth.value.currentUser!.uid)
+        .set({'email': myuser.value.email, 'cart': myuser.value.cart})
+        .then((value) => print("User Logined\n"))
+        .catchError((e) => print("Set Failed\n"));
   }
 
   Future<Rx<CustomUser>> fetchUser() async {
@@ -124,23 +124,25 @@ class AuthController extends GetxController {
     var productController = Get.find<ProductController>();
 
     //fetch user info from db
-    DocumentSnapshot userSnapshot = await firestore.collection('user').doc(auth.value.currentUser!.uid).get();
+    DocumentSnapshot userSnapshot = await firestore
+        .collection('user')
+        .doc(auth.value.currentUser!.uid)
+        .get();
     myuser.value.email = auth.value.currentUser!.email;
     List<dynamic> cartSnapshot = userSnapshot['cart'];
 
     //productController.productList
 
-    for(String i in cartSnapshot) {
+    for (String i in cartSnapshot) {
       for (Product j in productController.productList) {
         if (i == j.id) {
           cartController.addCart(j, 0);
         }
       }
     }
-    print("fetch success! current cart item id: "+ cartSnapshot.toString());
+    print("fetch success! current cart item id: " + cartSnapshot.toString());
     myuser.value.cart = cartController.cartList;
 
     return myuser;
   }
-
 }
