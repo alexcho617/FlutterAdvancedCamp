@@ -23,6 +23,7 @@ dependencies:
   cloud_firestore: ^3.1.5
   firebase_storage: ^10.2.4
   flutter_screenutil: ^5.0.1+2
+  firebase_analytics: ^9.0.5
 
 dev_dependencies:
   flutter_test:

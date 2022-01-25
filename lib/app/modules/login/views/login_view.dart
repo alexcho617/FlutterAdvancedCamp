@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -105,9 +106,12 @@ class LoginView extends GetView<LoginController> {
                       Padding(
                         padding: const EdgeInsets.all(2.0),
                         child: TextButton(
-                            onPressed: () {
+                            onPressed: () async {
                               //Implement Register with Email here
-                              AuthService.to.login('admin@admin.com', '123456');
+                              //이건 되네..
+                              // await FirebaseAnalytics.instance.setUserProperty(name: 'age', value: '21');
+                              AuthService.to.login(
+                              'admin@admin.com', '123456');
                             },
                             child: Text(
                               "회원가입",

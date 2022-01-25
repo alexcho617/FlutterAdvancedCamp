@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +10,7 @@ import 'package:hemweb/app/routes/app_pages.dart';
 
 import 'package:hemweb/models/product.dart';
 import '../models/user.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class AuthService extends GetxService {
   static AuthService get to => Get.find();
@@ -16,42 +19,43 @@ class AuthService extends GetxService {
   Rx<FirebaseAuth> auth = FirebaseAuth.instance.obs;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference user = FirebaseFirestore.instance.collection('user');
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   /// Mocks a login process
+
   final isLoggedIn = false.obs;
   bool get isLoggedInValue => isLoggedIn.value;
 
   @override
-  void onReady() {
+  void onReady() async{//여기서 실행하는 것은 잘안된다 왜지..?
     super.onReady();
     authCheck();
   }
 
-  void authCheck() async {
-    if (auth.value.authStateChanges().first != null) {
-      //TODO: 문제가 있다...여기에 그냥 무작정실행되네.
-      await auth.value.authStateChanges().first.then((value) {
-        print('Auth_service: line 33 $value');
-        if (auth.value.currentUser != null) {
-          isLoggedIn.value = true;
-          fetchUser();
-        }
-      });
+  Future<User?> authCheck() async {
+    User? user = await auth.value.authStateChanges().first;
+    if(user != null){
+      isLoggedIn.value = true;
+      fetchUser();
     }
-    // if(fetchUser() != null){
-    //   isLoggedInValue = true;
-    // }
-    // if(fetchUser() != null){
-    //  isLoggedIn.value = true;
-    // }
+    return user;
   }
 
   void login(String email, String password) async {
     print("login called");
+    print(auth.value.currentUser);
     try {
       await auth.value
           .signInWithEmailAndPassword(email: email, password: password);
       if (auth.value.currentUser != null) {
+        await analytics.logLogin();
+        await analytics.setUserId(id: auth.value.currentUser!.uid);
+        await analytics.logEvent(name: 'view_product', parameters: {
+          'uid': auth.value.currentUser!.uid,
+          'name': '이강민',
+          'age': 21,
+        });
+        // await analytics.setUserProperty(name: 'ag', value: '21');
         isLoggedIn.value = true;
         fetchUser();
         //Get.rootDelegate.toNamed(Routes.HOME);
@@ -70,10 +74,10 @@ class AuthService extends GetxService {
 
   void logout() async {
     final cartController = Get.find<CartController>();
+    isLoggedIn.value = false;
     await auth.value.signOut();
     myuser.value.cart = [];
     cartController.cartList.clear();
-    isLoggedIn.value = false;
   }
 
   void register(String email, password) async {
@@ -128,37 +132,5 @@ class AuthService extends GetxService {
     myuser.value.cart = cartController.cartList;
 
     return myuser;
-  }
-
-  GoogleSignIn googleSignIn = GoogleSignIn(
-      clientId:
-          '114809887796-58vhm3md7ab4lgpae8tt4t99fc4c15f2.apps.googleusercontent.com');
-
-  void signInWithGoogle() async {
-    try {
-      GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-
-      if (googleSignInAccount != null) {
-        GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
-
-        AuthCredential authCredential = GoogleAuthProvider.credential(
-            accessToken: googleSignInAuthentication.accessToken,
-            idToken: googleSignInAuthentication.idToken);
-        await auth.value.signInWithCredential(authCredential);
-        QuerySnapshot userQuerySnapshot =
-            await firestore.collection('user').get();
-        for (var element in userQuerySnapshot.docs) {
-          if (element.id == auth.value.currentUser!.uid) {
-            return;
-          }
-        }
-        setUser();
-        isLoggedIn.value = true;
-        //Get.to(HomePage());
-      }
-    } catch (e) {
-      Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
-    }
   }
 }

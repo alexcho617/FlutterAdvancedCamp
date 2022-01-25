@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -33,8 +34,8 @@ class ProductsView extends GetView<ProductsController> {
           CarouselSlider(
             options: CarouselOptions(
               height: rootController.constraints.value.maxWidth < 1000
-                      ? rootController.constraints.value.maxWidth * 0.4
-                      : 400,
+                  ? rootController.constraints.value.maxWidth * 0.4
+                  : 400,
               autoPlay: true,
             ),
             items: imgList
@@ -51,14 +52,14 @@ class ProductsView extends GetView<ProductsController> {
             height: 60,
           ),
           rootController.constraints.value.maxWidth > 1000
-                ? returnGrid(4, rootController.constraints.value)
-                : returnGrid(2, rootController.constraints.value),
-
+              ? returnGrid(4, rootController.constraints.value)
+              : returnGrid(2, rootController.constraints.value),
         ],
       ),
     );
   }
-   Obx returnGrid(int gridCount, BoxConstraints constraints) {
+
+  Obx returnGrid(int gridCount, BoxConstraints constraints) {
     bool isWideLayout;
     if (gridCount == 4) {
       isWideLayout = true;
@@ -76,7 +77,7 @@ class ProductsView extends GetView<ProductsController> {
             childAspectRatio: 0.75),
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            margin: EdgeInsets.symmetric(horizontal: 8.0 ),
+            margin: EdgeInsets.symmetric(horizontal: 8.0),
             width: gridCount == 2
                 ? constraints.maxWidth * 0.5
                 : constraints.maxWidth * 0.2,
@@ -124,35 +125,28 @@ class ProductsView extends GetView<ProductsController> {
                       //var cartController = Get.find<CartController>();
                       //var authController = Get.find<AuthController>();
                       //add to firebase user/cart
-                      if (authController.isLoggedInValue != false) {
+                      AuthService.to.analytics.logAddToCart(
+                        items: [
+                          AnalyticsEventItem(
+                              itemName: 'Socks',
+                              itemId: 'xjw73ndnw',
+                              price: 10.0),
+                        ],
+                        currency: 'KRW',
+                        value: 15,
+                      );
+                      if (AuthService.to.isLoggedInValue != false) {
                         cartController.addCart(
                             controller.productList[index], 1);
                         DocumentReference userReference = FirebaseFirestore
                             .instance
                             .collection('user')
-                            .doc(authController.auth.value.currentUser!.uid);
+                            .doc(AuthService.to.auth.value.currentUser!.uid);
                         await userReference.update({
                           'cart': FieldValue.arrayUnion(
                               [controller.productList[index].id])
                         }).then((value) => print("Cart added in DB"));
                       } else {
-                        // Get.defaultDialog(
-                        //     onConfirm: () {
-                        //       Get.to(LoginPage());
-                        //     },
-                        //     middleText: “장바구니에 상품을 담으려면 로그인을 하셔야 합니다.”
-                        //   AlertDialog(
-                        //     title: Text('로그인'),
-                        //     content: Text('장바구니에 상품을 담으려면 로그인을 하셔야 합니다.'),
-                        //     actions: [
-                        //       TextButton(onPressed: (){
-                        //         Get.to(LoginPage());
-                        //       }, child: Text('ok')),
-                        //       TextButton(onPressed: (){
-                        //         Get.back();
-                        //       }, child: Text('cancel'))
-                        //     ],
-                        //   );
                         showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
@@ -180,7 +174,8 @@ class ProductsView extends GetView<ProductsController> {
               ),
             ),
           );
-        }, itemCount: controller.productList.length,
+        },
+        itemCount: controller.productList.length,
       ),
     );
     // return Obx(
@@ -301,5 +296,4 @@ class ProductsView extends GetView<ProductsController> {
     //   ),
     // );
   }
-
 }
