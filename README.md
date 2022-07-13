@@ -18,3 +18,4 @@ Attendance Commit 1/14
 7/4
 7/5
 Attndnce7/9
+attendance 7/13
